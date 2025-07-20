@@ -4,81 +4,130 @@ using UnityEngine.AI;
 
 public class Chaser : MonoBehaviour
 {
-    NavMeshAgent myAgent;
+    enum AIState { Idle, Patrol, Chase }
 
-    [SerializeField]
-    Transform targetTransform;
+    [SerializeField] private Transform[] patrolPoints;
+    [SerializeField] private float idleTime = 2f;
+    [SerializeField] private Transform player;
 
-    public string currentState;
+    private NavMeshAgent agent;
+    private int patrolIndex = 0;
+    private AIState currentState = AIState.Idle;
+    private Coroutine stateRoutine;
 
     void Awake()
     {
-        myAgent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Start()
     {
-        StartCoroutine(SwitchState("Idle"));
-    }
-
-    IEnumerator SwitchState(string newState)
-    {
-        if (currentState == newState)
-        {
-            yield break; // Exit if the state is already the same
-        }
-
-        // Set the current state to new state
-        currentState = newState;
-
-        // Start the current coroutine for the updated state
-        StartCoroutine(currentState);
-    }
-
-    IEnumerator Idle()
-    {
-        while (currentState == "Idle")
-        {
-            // Perform idle behavior here
-            if (targetTransform != null)
-            {
-                // If there is a target, go to the chasing state
-                StartCoroutine(SwitchState("ChaseTarget"));
-            }
-            yield return null; // Wait for the next frame
-        }
-    }
-
-    IEnumerator ChaseTarget()
-    {
-        // while loop in a coroutine = mini Update function
-        while (currentState == "ChaseTarget")
-        {
-            // Perform chasing behavior here
-            if (targetTransform == null)
-            {
-                StartCoroutine(SwitchState("Idle"));
-            }
-            else
-            {
-                myAgent.SetDestination(targetTransform.position);
-            }
-            
-            yield return null;
-        }
+        stateRoutine = StartCoroutine(HandleIdle());
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // If the chaser 'sees' the player, set the target to the player
-        if (other.gameObject.CompareTag("Player"))
-            targetTransform = other.transform;
+        if (other.CompareTag("Player"))
+        {
+            player = other.transform;
+            SwitchToState(AIState.Chase);
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        // If the player leaves the chaser's trigger, set the target to null
-        if (other.gameObject.CompareTag("Player"))
-            targetTransform = null;
+        if (other.CompareTag("Player"))
+        {
+            player = null;
+            SwitchToState(AIState.Idle);
+        }
+    }
+
+    void SwitchToState(AIState newState)
+    {
+        if (currentState == newState) return;
+
+        if (stateRoutine != null)
+            StopCoroutine(stateRoutine);
+
+        currentState = newState;
+
+        switch (currentState)
+        {
+            case AIState.Idle:
+                stateRoutine = StartCoroutine(HandleIdle());
+                break;
+            case AIState.Patrol:
+                stateRoutine = StartCoroutine(HandlePatrol());
+                break;
+            case AIState.Chase:
+                stateRoutine = StartCoroutine(HandleChase());
+                break;
+        }
+    }
+
+    IEnumerator HandleIdle()
+    {
+        float timer = 0f;
+
+        while (currentState == AIState.Idle)
+        {
+            timer += Time.deltaTime;
+
+            if (player != null)
+            {
+                SwitchToState(AIState.Chase);
+                yield break;
+            }
+
+            if (timer >= idleTime)
+            {
+                SwitchToState(AIState.Patrol);
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator HandlePatrol()
+    {
+        if (patrolPoints.Length == 0)
+            yield break;
+
+        agent.SetDestination(patrolPoints[patrolIndex].position);
+
+        while (currentState == AIState.Patrol)
+        {
+            if (player != null)
+            {
+                SwitchToState(AIState.Chase);
+                yield break;
+            }
+
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            {
+                patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
+                SwitchToState(AIState.Idle);
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator HandleChase()
+    {
+        while (currentState == AIState.Chase)
+        {
+            if (player == null)
+            {
+                SwitchToState(AIState.Idle);
+                yield break;
+            }
+
+            agent.SetDestination(player.position);
+            yield return null;
+        }
     }
 }
