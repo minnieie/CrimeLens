@@ -64,10 +64,12 @@ namespace StarterAssets
 		public float StandingHeight = 2.0f; // Set to desired standing height
 		public float CrouchHeight = 1.0f; // Set to desired crouch height
 		private Vector3 _standingCameraLocalPosition;
-		private Vector3 _crouchingCameraLocalPosition; // Adjust as needed for crouch camera position
+		private Vector3 _crouchingCameraLocalPosition; // Crouch camera position
 		[SerializeField] private Transform playerModel;
 		private Vector3 _standingScale = Vector3.one; // Default scale for standing
-		private Vector3 _crouchingScale = new Vector3(1f, 0.5f, 1); // Scale for crouching, adjust as needed
+		private Vector3 _crouchingScale = new Vector3(1f, 0.5f, 1); // Scale for crouching
+		private Vector3 _standingModelLocalPosition = Vector3.zero;
+		private Vector3 _crouchingModelLocalPosition = new Vector3(0,-0.5f, 0); // Position offset for crouching
 
 
 		// timeout deltatime
@@ -282,10 +284,7 @@ namespace StarterAssets
 				if (playerModel != null)
 				{
 					playerModel.localScale = _crouchingScale;
-				}
-				else
-				{
-					transform.localScale = _crouchingScale;
+					playerModel.localPosition = _crouchingModelLocalPosition; // Adjust position for crouching
 				}
 			}
 			else if (!_input.crouch && _isCrouching)
@@ -295,14 +294,11 @@ namespace StarterAssets
 				_controller.height = StandingHeight;
 				_controller.center = new Vector3(0, StandingHeight / 2, 0);
 				CinemachineCameraTarget.transform.localPosition = _standingCameraLocalPosition;
-				
+
 				if (playerModel != null)
 				{
 					playerModel.localScale = _standingScale;
-				}
-				else
-				{
-					transform.localScale = _standingScale;
+					playerModel.localPosition = _standingModelLocalPosition; // Reset position for standing
 				}
 			}
 		}
