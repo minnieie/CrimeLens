@@ -63,10 +63,12 @@ namespace StarterAssets
 		public float CrouchSpeedMultiplier = 0.5f; // Halves movement speed
 		public float StandingHeight = 2.0f; // Set to desired standing height
 		public float CrouchHeight = 1.0f; // Set to desired crouch height
-		private float _originalHeight;
 		private Vector3 _standingCameraLocalPosition;
 		private Vector3 _crouchingCameraLocalPosition; // Adjust as needed for crouch camera position
-		
+		[SerializeField] private Transform playerModel;
+		private Vector3 _standingScale = Vector3.one; // Default scale for standing
+		private Vector3 _crouchingScale = new Vector3(1f, 0.5f, 1); // Scale for crouching, adjust as needed
+
 
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
@@ -107,7 +109,6 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
-			_originalHeight = StandingHeight;
 			_controller.height = StandingHeight;
 			_controller.center = new Vector3(0, StandingHeight / 2, 0);
 			_standingCameraLocalPosition = CinemachineCameraTarget.transform.localPosition;
@@ -276,6 +277,16 @@ namespace StarterAssets
 				_controller.height = CrouchHeight;
 				_controller.center = new Vector3(0, CrouchHeight / 2, 0);
 				CinemachineCameraTarget.transform.localPosition = _crouchingCameraLocalPosition;
+
+				//Shrink the capsule
+				if (playerModel != null)
+				{
+					playerModel.localScale = _crouchingScale;
+				}
+				else
+				{
+					transform.localScale = _crouchingScale;
+				}
 			}
 			else if (!_input.crouch && _isCrouching)
 			{
@@ -284,6 +295,15 @@ namespace StarterAssets
 				_controller.height = StandingHeight;
 				_controller.center = new Vector3(0, StandingHeight / 2, 0);
 				CinemachineCameraTarget.transform.localPosition = _standingCameraLocalPosition;
+				
+				if (playerModel != null)
+				{
+					playerModel.localScale = _standingScale;
+				}
+				else
+				{
+					transform.localScale = _standingScale;
+				}
 			}
 		}
 
