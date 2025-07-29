@@ -14,7 +14,7 @@ public class Chaser : MonoBehaviour
     [SerializeField] private float idleTime = 2f;
 
     // Reference to the player (set when detected)
-    [SerializeField] private Transform player;
+    private Transform player;
 
     private NavMeshAgent agent;       // NavMeshAgent component for pathfinding
     private int patrolIndex = 0;      // Current patrol point index
