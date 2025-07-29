@@ -59,6 +59,14 @@ namespace StarterAssets
 		private float _rotationVelocity;
 		private float _verticalVelocity;
 		private float _terminalVelocity = 53.0f;
+		private bool _isCrouching = false;
+		public float CrouchSpeedMultiplier = 0.5f; // Halves movement speed
+		public float StandingHeight = 2.0f; // Set to desired standing height
+		public float CrouchHeight = 1.0f; // Set to desired crouch height
+		private float _originalHeight;
+		private Vector3 _standingCameraLocalPosition;
+		private Vector3 _crouchingCameraLocalPosition; // Adjust as needed for crouch camera position
+		
 
 		// timeout deltatime
 		private float _jumpTimeoutDelta;
@@ -99,6 +107,16 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
+			_originalHeight = StandingHeight;
+			_controller.height = StandingHeight;
+			_controller.center = new Vector3(0, StandingHeight / 2, 0);
+			_standingCameraLocalPosition = CinemachineCameraTarget.transform.localPosition;
+			_crouchingCameraLocalPosition = new Vector3(
+				_standingCameraLocalPosition.x,
+				CrouchHeight / 2, // Adjust this value to set the crouching camera height
+				_standingCameraLocalPosition.z
+			);
+
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
 #else
@@ -112,6 +130,7 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			HandleCrouch();
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -155,6 +174,8 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			if (_isCrouching)
+				targetSpeed *= CrouchSpeedMultiplier;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -243,6 +264,26 @@ namespace StarterAssets
 			if (_verticalVelocity < _terminalVelocity)
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
+			}
+		}
+
+		private void HandleCrouch()
+		{
+			if (_input.crouch && !_isCrouching)
+			{
+				// Start crouching
+				_isCrouching = true;
+				_controller.height = CrouchHeight;
+				_controller.center = new Vector3(0, CrouchHeight / 2, 0);
+				CinemachineCameraTarget.transform.localPosition = _crouchingCameraLocalPosition;
+			}
+			else if (!_input.crouch && _isCrouching)
+			{
+				// Stop crouching
+				_isCrouching = false;
+				_controller.height = StandingHeight;
+				_controller.center = new Vector3(0, StandingHeight / 2, 0);
+				CinemachineCameraTarget.transform.localPosition = _standingCameraLocalPosition;
 			}
 		}
 

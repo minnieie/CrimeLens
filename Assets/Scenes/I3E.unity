@@ -1174,7 +1174,6 @@ MonoBehaviour:
   - {fileID: 1937790940}
   - {fileID: 1750426404}
   idleTime: 2
-  player: {fileID: 1878427951}
 --- !u!4 &1132538543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 941824226500600659, guid: f1c5d42adf30dc44abb8ac00ef218d6c, type: 3}
@@ -1192,7 +1191,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1191308056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81b1a8023d6ce5245a6bb5d9ecc0ec15, type: 3}
   m_Name: 
@@ -1759,11 +1758,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2013717580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1878427951 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1211785580696759756, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-  m_PrefabInstance: {fileID: 4590007488466633775}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1933546685
 Mesh:
   m_ObjectHideFlags: 0
@@ -2403,9 +2397,21 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2825075353443658506, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
+      propertyPath: jump
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825075353443658506, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
+      propertyPath: crouch
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2825075353443658506, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
+      propertyPath: sprint
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7969520718398587806, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.4803905
+      value: -12.28
       objectReference: {fileID: 0}
     - target: {fileID: 7969520718398587806, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
       propertyPath: m_LocalPosition.y
