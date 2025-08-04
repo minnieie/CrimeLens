@@ -68,8 +68,8 @@ namespace StarterAssets
 		[SerializeField] private Transform playerModel;
 		private Vector3 _standingScale = Vector3.one; // Default scale for standing
 		private Vector3 _crouchingScale = new Vector3(1f, 0.5f, 1); // Scale for crouching
-		private Vector3 _standingModelLocalPosition = Vector3.zero;
-		private Vector3 _crouchingModelLocalPosition = new Vector3(0,-0.5f, 0); // Position offset for crouching
+		private Vector3 _standingModelLocalPosition = new Vector3(0, 0.9f, 0); // Position offset for standing
+		private Vector3 _crouchingModelLocalPosition = new Vector3(0, 0.5f, 0); // Position offset for crouching
 
 
 		// timeout deltatime
