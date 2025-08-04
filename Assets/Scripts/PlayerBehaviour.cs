@@ -3,6 +3,15 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     private CoinBehaviour nearbyCoin; // The coin the player is near
+    public AudioSource footstepAudio;  
+    public float moveThreshold = 0.1f; 
+    private Vector3 lastPosition;
+    
+
+    void Start()
+    {
+        lastPosition = transform.position;
+    }
 
     void Update()
     {
@@ -12,6 +21,22 @@ public class PlayerBehaviour : MonoBehaviour
             nearbyCoin.Collect(this); // Collect coin
             nearbyCoin = null; // Clear reference after collection
         }
+        
+        // Footstep sound logic:
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        if (distanceMoved > moveThreshold)
+        {
+            if (!footstepAudio.isPlaying)
+                footstepAudio.Play();
+        }
+        else
+        {
+            if (footstepAudio.isPlaying)
+                footstepAudio.Pause();  // Or Stop()
+        }
+
+        lastPosition = transform.position;
     }
 
     void OnTriggerEnter(Collider other)
