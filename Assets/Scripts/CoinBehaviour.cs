@@ -15,14 +15,10 @@ public class CoinBehaviour : MonoBehaviour
         originalMat = myMeshRenderer.material; // Store the original material
     }
 
-    void Update()
-    {
-        
-    }
-
     public void Highlight()
     {
         myMeshRenderer.material = highlightMat; // Change to highlight material
+        
     }
 
     public void Unhighlight()

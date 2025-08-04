@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    private CoinBehaviour nearbyCoin; // The coin the player is near
-    public AudioSource footstepAudio;  
-    public float moveThreshold = 0.1f; 
+    bool canInteract; // Flag to check if player can interact with objects
+    CoinBehaviour nearbyCoin; // The coin the player is near
+    public AudioSource footstepAudio;
+    public float moveThreshold = 0.1f;
     private Vector3 lastPosition;
-    
+    [SerializeField] Transform spawnPoint;
+    [SerializeField] float interactionDistance = 3.0f;
 
     void Start()
     {
@@ -15,28 +17,33 @@ public class PlayerBehaviour : MonoBehaviour
 
     void Update()
     {
-        // Check for "E" key press and collect the coin if nearby
-        if (nearbyCoin != null && Input.GetKeyDown(KeyCode.E))
-        {
-            nearbyCoin.Collect(this); // Collect coin
-            nearbyCoin = null; // Clear reference after collection
-        }
-        
-        // Footstep sound logic:
-        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+        canInteract = false; // Reset interaction flag each frame
+        //currentHidingSpot = null;
 
-        if (distanceMoved > moveThreshold)
+        RaycastHit hitInfo;
+        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.magenta);
+        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance))
         {
-            if (!footstepAudio.isPlaying)
-                footstepAudio.Play();
-        }
-        else
-        {
-            if (footstepAudio.isPlaying)
-                footstepAudio.Pause();  // Or Stop()
-        }
+            Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
+            if (hitInfo.collider.gameObject.CompareTag("Collectible"))
+            {
+                // Set the canInteract flag to true
+                // Get the Collectible component from the detected object
+                canInteract = true;
+                nearbyCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
+                nearbyCoin.Highlight(); // Highlight the coin
+            }
 
-        lastPosition = transform.position;
+            // else if (hitInfo.collider.gameObject.CompareTag("HidingSpot"))
+            // {
+            //     canInteract = true;
+            //     currentHidingSpot = hitInfo.collider.gameObject.GetComponent<HidingSpot>();
+            // }
+            else
+            {
+                nearbyCoin.Unhighlight(); // Unhighlight if not a collectible
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -50,16 +57,16 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        // When staying near a coin
-        CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
-        if (coin != null)
-        {
-            nearbyCoin = coin;
-            coin.Highlight();
-        }
-    }
+    // void OnTriggerStay(Collider other)
+    // {
+    //     // When staying near a coin
+    //     CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
+    //     if (coin != null)
+    //     {
+    //         nearbyCoin = coin;
+    //         coin.Highlight();
+    //     }
+    // }
 
     void OnTriggerExit(Collider other)
     {
@@ -69,6 +76,18 @@ public class PlayerBehaviour : MonoBehaviour
         {
             coin.Unhighlight();
             nearbyCoin = null;
+        }
+    }
+
+    public void OnInteract()
+    {
+        if (canInteract)
+        {
+            if (nearbyCoin != null)
+            {
+                Debug.Log("Interacting with coin: " + nearbyCoin.gameObject.name);
+                nearbyCoin.Collect(this); // Collect the coin
+            }
         }
     }
 }
