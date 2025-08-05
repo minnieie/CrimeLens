@@ -16,7 +16,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         lastPosition = transform.position;
     }
-
     void Update()
     {
         canInteract = false; // Reset interaction flag each frame
@@ -37,20 +36,15 @@ public class PlayerBehaviour : MonoBehaviour
         if (Physics.Raycast(rayOrigin, rayDirection, out hitInfo, interactionDistance))
         {
             Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
+
+            // Check if the object hit by the raycast has the "Collectible" tag
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
             {
-                CoinBehaviour coin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
-                if (coin != null)
-                {
-                    canInteract = true;
-                    nearbyCoin = coin; // Set the nearby coin
-                    if (coin != lastCoin)
-                    {
-                        lastCoin?.Unhighlight();
-                    }
-                    nearbyCoin.Highlight(); // Highlight the coin
-                    lastCoin = coin; // Update the last coin to the current one
-                }
+                // Set the canInteract flag to true
+                // Get the Collectible component from the detected object
+                canInteract = true;
+                nearbyCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
+                nearbyCoin.Highlight(); // Highlight the coin
             }
 
             else if (hitInfo.collider.gameObject.CompareTag("Door"))
@@ -79,6 +73,7 @@ public class PlayerBehaviour : MonoBehaviour
                 nearbyCoin = null;
         }
     }
+
 
     void OnTriggerEnter(Collider other)
     {
