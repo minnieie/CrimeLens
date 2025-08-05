@@ -14,37 +14,61 @@ public class PlayerBehaviour : MonoBehaviour
     {
         lastPosition = transform.position;
     }
-
     void Update()
     {
-        canInteract = false; // Reset interaction flag each frame
-        //currentHidingSpot = null;
+        // Reset the interaction flag at the start of each frame
+        canInteract = false;
 
+        // Check if the main camera exists in the scene
+        if (Camera.main == null)
+        {
+            Debug.LogWarning("Main Camera not found!");
+            return; // Exit early if no camera found
+        }
+
+        // Set the origin of the raycast to the camera's position
+        Vector3 rayOrigin = Camera.main.transform.position;
+        // Set the direction of the raycast to where the camera is facing
+        Vector3 rayDirection = Camera.main.transform.forward;
+
+        // Draw a magenta debug ray in the Scene view to visualize the raycast
+        Debug.DrawRay(rayOrigin, rayDirection * interactionDistance, Color.magenta);
+
+        // Perform the raycast from the camera forward, limited by interactionDistance
         RaycastHit hitInfo;
-        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.magenta);
-        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance))
+        if (Physics.Raycast(rayOrigin, rayDirection, out hitInfo, interactionDistance))
         {
             Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
+
+            // Check if the object hit by the raycast has the "Collectible" tag
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
             {
-                // Set the canInteract flag to true
-                // Get the Collectible component from the detected object
-                canInteract = true;
+                canInteract = true; // Player can interact with this object
+                // Get the CoinBehaviour script attached to the collectible object
                 nearbyCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
-                nearbyCoin.Highlight(); // Highlight the coin
+                nearbyCoin.Highlight(); // Highlight the collectible to show it can be interacted with
             }
-
-            // else if (hitInfo.collider.gameObject.CompareTag("HidingSpot"))
-            // {
-            //     canInteract = true;
-            //     currentHidingSpot = hitInfo.collider.gameObject.GetComponent<HidingSpot>();
-            // }
             else
             {
-                nearbyCoin.Unhighlight(); // Unhighlight if not a collectible
+                // If the hit object is NOT collectible but a coin was previously highlighted
+                if (nearbyCoin != null)
+                {
+                    nearbyCoin.Unhighlight(); // Remove highlight from the previous collectible
+                    nearbyCoin = null;         // Clear the reference so interaction won't happen
+                }
+            }
+        }
+        else
+        {
+            // If raycast didn't hit anything and a collectible was previously highlighted
+            if (nearbyCoin != null)
+            {
+                nearbyCoin.Unhighlight(); // Remove highlight
+                nearbyCoin = null;         // Clear the reference
             }
         }
     }
+
 
     void OnTriggerEnter(Collider other)
     {
