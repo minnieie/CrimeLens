@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7057677657072371707}
   - component: {fileID: 9113044181563906332}
   - component: {fileID: 2185008822695941276}
+  - component: {fileID: 374308463440976598}
   m_Layer: 0
   m_Name: pCylinder1
   m_TagString: Untagged
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &374308463440976598
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 314240687782684482}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5076798556035486163, guid: 75d82dd27ed447446a8a17dbf9ece7b4, type: 3}
 --- !u!1 &2855701196411151175
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +186,7 @@ GameObject:
   - component: {fileID: 2511649070223220086}
   - component: {fileID: 8377248493094943023}
   - component: {fileID: 5288681622192995421}
+  - component: {fileID: 4883006084039359173}
   m_Layer: 0
   m_Name: pCylinder2
   m_TagString: Untagged
@@ -238,6 +262,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4883006084039359173
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3310089374698169959}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6099800089077584851, guid: 75d82dd27ed447446a8a17dbf9ece7b4, type: 3}
 --- !u!1 &4436341192579703454
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +295,7 @@ GameObject:
   - component: {fileID: 777314043301048762}
   - component: {fileID: 3504700725809612709}
   - component: {fileID: 826503448997156918}
+  - component: {fileID: 9135936227695970805}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -325,6 +372,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &9135936227695970805
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436341192579703454}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2619086233303812490, guid: 75d82dd27ed447446a8a17dbf9ece7b4, type: 3}
 --- !u!1 &5969569487076007509
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,6 +438,7 @@ GameObject:
   - component: {fileID: 5225468941268178121}
   - component: {fileID: 2645323413241996256}
   - component: {fileID: 1619715740557110008}
+  - component: {fileID: 647014755283453790}
   m_Layer: 0
   m_Name: pCylinder3
   m_TagString: Untagged
@@ -444,3 +514,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &647014755283453790
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6301037093470526682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8321685774571456786, guid: 75d82dd27ed447446a8a17dbf9ece7b4, type: 3}
