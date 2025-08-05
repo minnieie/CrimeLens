@@ -4,6 +4,7 @@ public class PlayerBehaviour : MonoBehaviour
 {
     bool canInteract; // Flag to check if player can interact with objects
     CoinBehaviour nearbyCoin; // The coin the player is near
+    private CoinBehaviour lastCoin = null; // The last coin the player interacted with
     public AudioSource footstepAudio;
     public float moveThreshold = 0.1f;
     private Vector3 lastPosition;
@@ -27,11 +28,18 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
             {
-                // Set the canInteract flag to true
-                // Get the Collectible component from the detected object
-                canInteract = true;
-                nearbyCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
-                nearbyCoin.Highlight(); // Highlight the coin
+                CoinBehaviour coin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
+                if (coin != null)
+                {
+                    canInteract = true;
+                    nearbyCoin = coin; // Set the nearby coin
+                    if (coin != lastCoin)
+                    {
+                        lastCoin?.Unhighlight();
+                    }
+                    nearbyCoin.Highlight(); // Highlight the coin
+                    lastCoin = coin; // Update the last coin to the current one
+                }
             }
 
             // else if (hitInfo.collider.gameObject.CompareTag("HidingSpot"))
@@ -41,8 +49,22 @@ public class PlayerBehaviour : MonoBehaviour
             // }
             else
             {
-                nearbyCoin.Unhighlight(); // Unhighlight if not a collectible
+                if (lastCoin != null)
+                {
+                    lastCoin.Unhighlight(); // Unhighlight the last coin if not a collectible
+                    lastCoin = null;
+                }
+                nearbyCoin = null;
             }
+        }
+        else
+        {
+            if (lastCoin != null)
+                {
+                    lastCoin.Unhighlight(); // Unhighlight the last coin if not a collectible
+                    lastCoin = null;
+                }
+                nearbyCoin = null;
         }
     }
 
@@ -68,16 +90,16 @@ public class PlayerBehaviour : MonoBehaviour
     //     }
     // }
 
-    void OnTriggerExit(Collider other)
-    {
-        // When walking away from the coin
-        CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
-        if (coin != null && coin == nearbyCoin)
-        {
-            coin.Unhighlight();
-            nearbyCoin = null;
-        }
-    }
+    // void OnTriggerExit(Collider other)
+    // {
+    //     // When walking away from the coin
+    //     CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
+    //     if (coin != null && coin == nearbyCoin)
+    //     {
+    //         coin.Unhighlight();
+    //         nearbyCoin = null;
+    //     }
+    // }
 
     public void OnInteract()
     {
