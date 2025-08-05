@@ -2,126 +2,131 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    bool canInteract; // Flag to check if player can interact with objects
-    CoinBehaviour nearbyCoin; // The coin the player is near
-    DoorBehaviour currentDoor; // The door the player is near
-    private CoinBehaviour lastCoin = null; // The last coin the player interacted with
+    // Interaction variables
+    bool canInteract;
+    CoinBehaviour nearbyCoin;
+    DoorBehaviour currentDoor;
+    ComputerBehaviour computer;
+    private CoinBehaviour lastCoin = null;
+    
+    // Movement variables
     public AudioSource footstepAudio;
     public float moveThreshold = 0.1f;
     private Vector3 lastPosition;
+    
+    // Configuration
     [SerializeField] Transform spawnPoint;
     [SerializeField] float interactionDistance = 3.0f;
+    
+    // Store the last frame's interaction state
+    private bool hadInteractableLastFrame = false;
 
     void Start()
     {
         lastPosition = transform.position;
     }
+
     void Update()
     {
-        canInteract = false; // Reset interaction flag each frame
-        // Check if the main camera exists in the scene
-        if (Camera.main == null)
+        // Store previous state before resetting
+        hadInteractableLastFrame = canInteract;
+
+        // Reset interaction state (but preserve computer reference)
+        canInteract = false;
+        nearbyCoin = null;
+        currentDoor = null;
+
+        // Perform raycast detection
+        if (Camera.main != null)
         {
-            Debug.LogWarning("Main Camera not found!");
-            return; // Exit early if no camera found
-        }
+            Vector3 rayOrigin = Camera.main.transform.position;
+            Vector3 rayDirection = Camera.main.transform.forward;
 
-        // Set the origin of the raycast to the camera's position
-        Vector3 rayOrigin = Camera.main.transform.position;
-        // Set the direction of the raycast to where the camera is facing
-        Vector3 rayDirection = Camera.main.transform.forward;
-
-        RaycastHit hitInfo;
-        Debug.DrawRay(rayOrigin, rayDirection * interactionDistance, Color.magenta);
-        if (Physics.Raycast(rayOrigin, rayDirection, out hitInfo, interactionDistance))
-        {
-            Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
-
-            // Check if the object hit by the raycast has the "Collectible" tag
-            if (hitInfo.collider.gameObject.CompareTag("Collectible"))
+            if (Physics.Raycast(rayOrigin, rayDirection, out var hitInfo, interactionDistance))
             {
-                // Set the canInteract flag to true
-                // Get the Collectible component from the detected object
-                canInteract = true;
-                nearbyCoin = hitInfo.collider.gameObject.GetComponent<CoinBehaviour>();
-                nearbyCoin.Highlight(); // Highlight the coin
-            }
-
-            else if (hitInfo.collider.gameObject.CompareTag("Door"))
-            {
-                canInteract = true;
-                currentDoor = hitInfo.collider.gameObject.GetComponent<DoorBehaviour>();
+                HandleInteractionTarget(hitInfo.collider.gameObject);
             }
             else
             {
-                if (lastCoin != null)
-                {
-                    lastCoin.Unhighlight(); // Unhighlight the last coin if not a collectible
-                    lastCoin = null;
-                }
-                nearbyCoin = null;
-                currentDoor = null; // Reset current door if not a door
+                ClearLastCoinHighlight();
+            }
+        }
+    }
+
+    void HandleInteractionTarget(GameObject target)
+    {
+        if (target.CompareTag("Collectible"))
+        {
+            canInteract = true;
+            nearbyCoin = target.GetComponent<CoinBehaviour>();
+            if (nearbyCoin != null)
+            {
+                nearbyCoin.Highlight();
+                lastCoin = nearbyCoin;
+            }
+        }
+        else if (target.CompareTag("Door"))
+        {
+            canInteract = true;
+            currentDoor = target.GetComponent<DoorBehaviour>();
+        }
+        else if (target.CompareTag("Computer"))
+        {
+            computer = target.GetComponent<ComputerBehaviour>() ?? target.GetComponentInParent<ComputerBehaviour>();
+            if (computer != null) 
+            {
+                canInteract = true;
+                Debug.Log($"Computer found - canInteract set to true");
             }
         }
         else
         {
-            if (lastCoin != null)
-                {
-                    lastCoin.Unhighlight(); // Unhighlight the last coin if not a collectible
-                    lastCoin = null;
-                }
-                nearbyCoin = null;
+            ClearLastCoinHighlight();
         }
     }
-
-
-    void OnTriggerEnter(Collider other)
+    
+    void ClearLastCoinHighlight()
     {
-        // Level Change (still happens automatically on trigger)
-        LevelChanger levelChanger = other.GetComponent<LevelChanger>();
-        if (levelChanger != null)
+        if (lastCoin != null)
         {
-            // LevelChanger handles scene loading
-            return;
+            lastCoin.Unhighlight();
+            lastCoin = null;
         }
     }
-
-    // void OnTriggerStay(Collider other)
-    // {
-    //     // When staying near a coin
-    //     CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
-    //     if (coin != null)
-    //     {
-    //         nearbyCoin = coin;
-    //         coin.Highlight();
-    //     }
-    // }
-
-    // void OnTriggerExit(Collider other)
-    // {
-    //     // When walking away from the coin
-    //     CoinBehaviour coin = other.GetComponent<CoinBehaviour>();
-    //     if (coin != null && coin == nearbyCoin)
-    //     {
-    //         coin.Unhighlight();
-    //         nearbyCoin = null;
-    //     }
-    // }
 
     public void OnInteract()
     {
-        if (canInteract)
+        if (nearbyCoin != null)
         {
-            if (nearbyCoin != null)
+            Debug.Log($"Interacting with coin: {nearbyCoin.gameObject.name}");
+            nearbyCoin.Collect(this);
+        }
+        else if (currentDoor != null)
+        {
+            Debug.Log($"Interacting with door: {currentDoor.gameObject.name}");
+            currentDoor.OpenDoors();
+        }
+        else if (ComputerBehaviour.ActiveComputer != null)
+        {
+            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
+            ComputerBehaviour.ActiveComputer.EndInteraction();
+        }
+        else if (computer != null)
+        {
+            if (!computer.IsInteracting)
             {
-                Debug.Log("Interacting with coin: " + nearbyCoin.gameObject.name);
-                nearbyCoin.Collect(this); // Collect the coin
+                Debug.Log($"Interacting with computer: {computer.gameObject.name}");
+                computer.StartInteraction();
             }
-            else if (currentDoor != null)
-            {
-                Debug.Log("Interacting with door: " + currentDoor.gameObject.name);
-                currentDoor.OpenDoors();
-            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        LevelChanger levelChanger = other.GetComponent<LevelChanger>();
+        if (levelChanger != null)
+        {
+            return;
         }
     }
 }

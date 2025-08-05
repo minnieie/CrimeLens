@@ -8,6 +8,7 @@ TagManager:
   - Collectible
   - HealingArea
   - Door
+  - Computer
   layers:
   - Default
   - TransparentFX

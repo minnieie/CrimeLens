@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8965270125110707336}
   - component: {fileID: 8906845426393423818}
   - component: {fileID: 2989345243957418250}
+  - component: {fileID: 918522917801826962}
   m_Layer: 0
   m_Name: monitor
   m_TagString: Untagged
@@ -87,3 +88,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &918522917801826962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8437937858471830395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e073e834deb1db43ab048fef9edc3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  zoomPosition: {fileID: 0}
+  computerUI: {fileID: 0}
+  zoomSpeed: 5
+  zoomFOV: 30
