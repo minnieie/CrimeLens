@@ -4,6 +4,7 @@ public class PlayerBehaviour : MonoBehaviour
 {
     bool canInteract; // Flag to check if player can interact with objects
     CoinBehaviour nearbyCoin; // The coin the player is near
+    DoorBehaviour currentDoor; // The door the player is near
     private CoinBehaviour lastCoin = null; // The last coin the player interacted with
     public AudioSource footstepAudio;
     public float moveThreshold = 0.1f;
@@ -19,11 +20,21 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         canInteract = false; // Reset interaction flag each frame
-        //currentHidingSpot = null;
+        // Check if the main camera exists in the scene
+        if (Camera.main == null)
+        {
+            Debug.LogWarning("Main Camera not found!");
+            return; // Exit early if no camera found
+        }
+
+        // Set the origin of the raycast to the camera's position
+        Vector3 rayOrigin = Camera.main.transform.position;
+        // Set the direction of the raycast to where the camera is facing
+        Vector3 rayDirection = Camera.main.transform.forward;
 
         RaycastHit hitInfo;
-        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.magenta);
-        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance))
+        Debug.DrawRay(rayOrigin, rayDirection * interactionDistance, Color.magenta);
+        if (Physics.Raycast(rayOrigin, rayDirection, out hitInfo, interactionDistance))
         {
             Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
@@ -42,11 +53,11 @@ public class PlayerBehaviour : MonoBehaviour
                 }
             }
 
-            // else if (hitInfo.collider.gameObject.CompareTag("HidingSpot"))
-            // {
-            //     canInteract = true;
-            //     currentHidingSpot = hitInfo.collider.gameObject.GetComponent<HidingSpot>();
-            // }
+            else if (hitInfo.collider.gameObject.CompareTag("Door"))
+            {
+                canInteract = true;
+                currentDoor = hitInfo.collider.gameObject.GetComponent<DoorBehaviour>();
+            }
             else
             {
                 if (lastCoin != null)
@@ -55,6 +66,7 @@ public class PlayerBehaviour : MonoBehaviour
                     lastCoin = null;
                 }
                 nearbyCoin = null;
+                currentDoor = null; // Reset current door if not a door
             }
         }
         else
@@ -109,6 +121,11 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 Debug.Log("Interacting with coin: " + nearbyCoin.gameObject.name);
                 nearbyCoin.Collect(this); // Collect the coin
+            }
+            else if (currentDoor != null)
+            {
+                Debug.Log("Interacting with door: " + currentDoor.gameObject.name);
+                currentDoor.OpenDoors();
             }
         }
     }
