@@ -9,6 +9,7 @@ TagManager:
   - HealingArea
   - Door
   - Computer
+  - NPC
   layers:
   - Default
   - TransparentFX

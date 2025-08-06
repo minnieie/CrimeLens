@@ -7,6 +7,7 @@ public class PlayerBehaviour : MonoBehaviour
     CoinBehaviour nearbyCoin;
     DoorBehaviour currentDoor;
     ComputerBehaviour computer;
+    NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
     
     // Movement variables
@@ -35,6 +36,7 @@ public class PlayerBehaviour : MonoBehaviour
         canInteract = false;
         nearbyCoin = null;
         currentDoor = null;
+        npc = null;
 
         // Perform raycast detection
         if (Camera.main != null)
@@ -79,6 +81,15 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log($"Computer found - canInteract set to true");
             }
         }
+        else if (target.CompareTag("NPC"))
+        {
+            npc = target.GetComponent<NPCBehaviour>();
+            if (npc != null)
+            {
+                canInteract = true;
+                Debug.Log("NPC found - canInteract set to true");
+            }
+        }
         else
         {
             ClearLastCoinHighlight();
@@ -118,6 +129,12 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log($"Interacting with computer: {computer.gameObject.name}");
                 computer.StartInteraction();
             }
+        }
+        else if (npc != null)
+        {
+            Debug.Log("Dialogue interaction triggered.");
+            NPCBehaviour.dialogueActive = true;
+            npc.StartDialogue();
         }
     }
 
