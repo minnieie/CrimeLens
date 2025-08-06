@@ -21,6 +21,22 @@ public class ComputerBehaviour : MonoBehaviour
 
     public static ComputerBehaviour ActiveComputer = null;
 
+    void Start()
+    {
+        // Set correct camera priorities
+        if (playerCam != null) playerCam.Priority = 20;
+        if (sharedZoomCam != null) sharedZoomCam.Priority = 10;
+
+        // Hide computer UI at start
+        if (computerUI != null) computerUI.SetActive(false);
+
+        // Enable player movement at start
+        if (player != null)
+            player.GetComponent<FirstPersonController>().enabled = true;
+
+        isInteracting = false;
+    }
+
     public void StartInteraction()
     {
         if (isInteracting) return;
