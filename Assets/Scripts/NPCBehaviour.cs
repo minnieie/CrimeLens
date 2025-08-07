@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.UI;
 
 // This script handles the behavior of NPCs, including dialogue interaction
 // and displaying dialogue text on the screen.
@@ -9,6 +10,7 @@ public class NPCBehaviour : MonoBehaviour
 {
     public string[] dialogueLines;
     public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI nameText;
     public float wordDelay = 0.3f;
     public static bool dialogueActive = false;
     private int currentLine = 0;
@@ -18,12 +20,23 @@ public class NPCBehaviour : MonoBehaviour
     {
         if (dialogueActive && dialogueLines.Length > 0)
         {
-            dialogueText.gameObject.SetActive(true);
+            nameText.text = gameObject.name;
+            dialogueText.text = "";
+            // Activate the dialogue UI
+            dialogueText.transform.parent.gameObject.SetActive(true);
             ActiveNPC = this;
             Debug.Log("Started interaction with " + gameObject.name);
             dialogueActive = true;
             currentLine = 0;
             StartCoroutine(ShowDialogueLine(dialogueLines[currentLine]));
+        }
+        else
+        {
+            StopDialogue();
+            dialogueActive = false;
+            ActiveNPC = null;
+            dialogueText.transform.parent.gameObject.SetActive(false);
+            Debug.LogWarning("Dialogue is already active or no dialogue lines are set for " + gameObject.name);
         }
     }
 
@@ -52,7 +65,7 @@ public class NPCBehaviour : MonoBehaviour
     {
         dialogueActive = false;
         ActiveNPC = null;
-        dialogueText.gameObject.SetActive(false);
+        dialogueText.transform.parent.gameObject.SetActive(false);
         StopAllCoroutines();
         dialogueText.text = "";
         Debug.Log("Dialogue ended with " + gameObject.name);

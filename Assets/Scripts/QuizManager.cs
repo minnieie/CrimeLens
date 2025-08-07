@@ -16,7 +16,8 @@ public class QuizManager : MonoBehaviour
         public List<string> answers;
         public int correctAnswerIndex;
         public VideoClip questionVideo;
-        
+        public Sprite questionImage;
+
         // Track if the question has been answered correctly
         public bool alreadyAnsweredCorrectly = false;
         // Track if the question has been scored
@@ -60,7 +61,9 @@ public class QuizManager : MonoBehaviour
 
         // Make sure videoPlayer is active before showing question
         if (videoPlayer != null)
+        {
             videoPlayer.gameObject.SetActive(true);
+        }
 
         ShowQuestion(currentQuestionIndex);
 
@@ -145,6 +148,7 @@ public class QuizManager : MonoBehaviour
     {
         correctFeedback.SetActive(isCorrect);
         wrongFeedback.SetActive(!isCorrect);
+        questionText.gameObject.SetActive(false);
     }
 
     private void MoveToNextQuestion()
