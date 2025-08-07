@@ -14,11 +14,6 @@ public class NPCBehaviour : MonoBehaviour
     private int currentLine = 0;
     public static NPCBehaviour ActiveNPC = null;
 
-    void Update()
-    {
-    
-    }
-
     public void StartDialogue()
     {
         if (dialogueActive && dialogueLines.Length > 0)

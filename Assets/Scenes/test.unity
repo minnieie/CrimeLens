@@ -721,11 +721,8 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 0e29d1739da773d4a81d77a46becfc55, type: 2}
   m_BuildHeightMesh: 0
-<<<<<<< Updated upstream
 --- !u!1 &230775027
-=======
 --- !u!1 &297310527
->>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -733,27 +730,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< Updated upstream
   - component: {fileID: 230775030}
   - component: {fileID: 230775029}
   - component: {fileID: 230775028}
   m_Layer: 0
   m_Name: PlayerCam
-=======
   - component: {fileID: 297310528}
   - component: {fileID: 297310530}
   - component: {fileID: 297310529}
   m_Layer: 5
   m_Name: Dialogue
->>>>>>> Stashed changes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-<<<<<<< Updated upstream
   m_IsActive: 1
 --- !u!114 &230775028
-=======
   m_IsActive: 0
 --- !u!224 &297310528
 RectTransform:
@@ -775,13 +767,11 @@ RectTransform:
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &297310529
->>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
   m_GameObject: {fileID: 230775027}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -820,7 +810,6 @@ MonoBehaviour:
       Anamorphism: 0
   BlendHint: 0
 --- !u!114 &230775029
-=======
   m_GameObject: {fileID: 297310527}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -920,13 +909,11 @@ GameObject:
   m_PrefabInstance: {fileID: 1145085535}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &367217313
->>>>>>> Stashed changes
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
   m_GameObject: {fileID: 230775027}
   m_Enabled: 0
   m_EditorHideFlags: 0
@@ -990,7 +977,6 @@ Transform:
   - {fileID: 1480817957}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
   m_GameObject: {fileID: 367217310}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -1003,7 +989,6 @@ Transform:
   - here are the rules...
   dialogueText: {fileID: 297310529}
   wordDelay: 0.3
->>>>>>> Stashed changes
 --- !u!1 &451754866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1918,8 +1903,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271987121}
   m_CullTransparentMesh: 1
-<<<<<<< Updated upstream
-=======
 --- !u!1 &1314277594 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2645394485646107500, guid: 1d04bea432abd0947a8ced1dba101bb7, type: 3}
@@ -1987,7 +1970,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
->>>>>>> Stashed changes
 --- !u!1 &1366746077
 GameObject:
   m_ObjectHideFlags: 0
