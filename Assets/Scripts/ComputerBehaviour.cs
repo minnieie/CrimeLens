@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using StarterAssets;
+using System.Collections;
+
 
 public class ComputerBehaviour : MonoBehaviour
 {
@@ -21,6 +23,9 @@ public class ComputerBehaviour : MonoBehaviour
 
     public static ComputerBehaviour ActiveComputer = null;
 
+    [Header("Quiz System")]
+    public QuizManager quizManager;
+
     void Start()
     {
         // Set correct camera priorities
@@ -39,6 +44,11 @@ public class ComputerBehaviour : MonoBehaviour
 
     public void StartInteraction()
     {
+        foreach (var renderer in player.GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = false;
+        }
+
         if (isInteracting) return;
         ActiveComputer = this;
 
@@ -65,6 +75,12 @@ public class ComputerBehaviour : MonoBehaviour
             computerUI.SetActive(true);
         }
 
+        // Start quiz
+        if (quizManager != null)
+        {
+            quizManager.InitializeQuiz(); // resets and shows first question for this computer
+        }
+
         // Show cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -76,6 +92,10 @@ public class ComputerBehaviour : MonoBehaviour
 
     public void EndInteraction()
     {
+        MeshRenderer playerRenderer = player.GetComponent<MeshRenderer>();
+        if (playerRenderer != null)
+            playerRenderer.enabled = true;
+
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
 
@@ -101,6 +121,9 @@ public class ComputerBehaviour : MonoBehaviour
             player.GetComponent<FirstPersonController>().enabled = true;
 
         ActiveComputer = null;
+
+        StartCoroutine(ReenablePlayerRenderersAfterDelay(1.5f)); // Delay in seconds
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -119,4 +142,14 @@ public class ComputerBehaviour : MonoBehaviour
             EndInteraction();
         }
     }
+    private IEnumerator ReenablePlayerRenderersAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        foreach (var renderer in player.GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = true;
+        }
+    }
+
 }

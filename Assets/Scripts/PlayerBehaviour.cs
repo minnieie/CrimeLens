@@ -53,6 +53,31 @@ public class PlayerBehaviour : MonoBehaviour
                 ClearLastCoinHighlight();
             }
         }
+
+        // Calculate how far player has moved since last frame
+        
+        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+
+        // If player moved more than threshold and footstep audio is not playing, play it
+         
+        if (distanceMoved > moveThreshold)
+        {
+            if (!footstepAudio.isPlaying)
+            {
+                footstepAudio.Play();
+            }
+        }
+        else
+        {
+            // Player stopped or nearly stopped moving, stop footstep sound
+            if (footstepAudio.isPlaying)
+            {
+                footstepAudio.Stop();
+            }
+        }
+
+            // Update last position for next frame check
+            lastPosition = transform.position;
     }
 
     void HandleInteractionTarget(GameObject target)
