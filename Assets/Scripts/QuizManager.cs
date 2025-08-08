@@ -4,108 +4,111 @@ using UnityEngine.Video;
 using System.Collections.Generic;
 using TMPro;
 
+// This script manages a multimedia quiz system in Unity.
+// It supports both text-based and video-based questions, handles user input,
+// provides feedback for correct and incorrect answers, tracks scoring,
+// and displays the final results. It also includes functionality to restart the quiz.
 
+
+// Main class that manages the quiz logic
 public class QuizManager : MonoBehaviour
 {
+    // Represents a single quiz question
     [System.Serializable]
     public class QuizQuestion
     {
-        public enum QuestionType { Text, Video }
-        public QuestionType type;
-        public string questionText;
-        public List<string> answers;
-        public int correctAnswerIndex;
-        public VideoClip questionVideo;
-        public Sprite questionImage;
+        public enum QuestionType { Text, Video } // Type of question: text or video
+        public QuestionType type; // Current question type
+        public string questionText; // Text of the question
+        public List<string> answers; // List of possible answers
+        public int correctAnswerIndex; // Index of the correct answer
+        public VideoClip questionVideo; // Video clip for video-type questions
+        public Sprite questionImage; // Optional image for the question
 
-        // Track if the question has been answered correctly
-        public bool alreadyAnsweredCorrectly = false;
-        // Track if the question has been scored
-        public bool hasBeenScored = false;
-
+        public bool alreadyAnsweredCorrectly = false; // Tracks if question was answered correctly
+        public bool hasBeenScored = false; // Tracks if score was already added for this question
     }
 
     [Header("Quiz Settings")]
-    public List<QuizQuestion> questions;
-    public float feedbackDisplayTime = 2f;
+    public List<QuizQuestion> questions; // List of all quiz questions
+    public float feedbackDisplayTime = 2f; // Time to show feedback before moving on
+
     [Header("Video Display")]
-    public GameObject videoDisplay; 
+    public GameObject videoDisplay; // UI object to display video
 
     [Header("Audio Settings")]
-    public AudioSource audioSource; 
-    public AudioClip correctAnswerSound;
-    public AudioClip wrongAnswerSound;
+    public AudioSource audioSource; // Audio source for playing sounds
+    public AudioClip correctAnswerSound; // Sound for correct answer
+    public AudioClip wrongAnswerSound; // Sound for wrong answer
 
     [Header("UI References")]
-    public TextMeshProUGUI questionText;
-    public TextMeshProUGUI scoreText;
-    public Button restartButton;
+    public TextMeshProUGUI questionText; // UI text for displaying question
+    public TextMeshProUGUI scoreText; // UI text for displaying score
+    public Button restartButton; // Button to restart the quiz
 
     [Header("Scoring")]
-    public int pointsPerCorrectAnswer = 10;
+    public int pointsPerCorrectAnswer = 10; // Points awarded per correct answer
 
-    public List<Button> answerButtons;
-    public GameObject correctFeedback;
-    public GameObject wrongFeedback;
-    public GameObject quizCompletePanel;
-    public VideoPlayer videoPlayer;
-    private int correctAnswersCount = 0;
-    private int currentQuestionIndex = 0;
-    private bool isWaitingForNextQuestion = false;
+    public List<Button> answerButtons; // Buttons for selecting answers
+    public GameObject correctFeedback; // UI feedback for correct answer
+    public GameObject wrongFeedback; // UI feedback for wrong answer
+    public GameObject quizCompletePanel; // Panel shown when quiz is complete
+    public VideoPlayer videoPlayer; // Video player component
 
-    // Reference to the player camera and shared zoom camera
+    private int correctAnswersCount = 0; // Total number of correct answers
+    private int currentQuestionIndex = 0; // Index of current question
+    private bool isWaitingForNextQuestion = false; // Prevents multiple answers during feedback
+
+    // Called when the game starts
     private void Start()
     {
-        InitializeQuiz();
+        InitializeQuiz(); // Set up the quiz
         if (restartButton != null)
-            restartButton.onClick.AddListener(RestartQuiz);
+            restartButton.onClick.AddListener(RestartQuiz); // Assign restart button listener
     }
 
-    // Initialize the quiz by resetting the question index and hiding feedback panels
+    // Initializes the quiz state
     public void InitializeQuiz()
     {
         currentQuestionIndex = 0;
 
-        // Make sure videoPlayer is active before showing question
+        // Ensure video player is active
         if (videoPlayer != null)
         {
             videoPlayer.gameObject.SetActive(true);
         }
 
-        ShowQuestion(currentQuestionIndex);
+        ShowQuestion(currentQuestionIndex); // Show first question
 
+        // Hide feedback and completion panels
         correctFeedback.SetActive(false);
         wrongFeedback.SetActive(false);
         quizCompletePanel.SetActive(false);
     }
 
-    // Show the current question based on the index
+    // Displays the question at the given index
     public void ShowQuestion(int index)
-    {   
-        // Check if the index is valid
+    {
+        // If index is out of bounds, end the quiz
         if (index >= questions.Count)
         {
             EndQuiz();
             return;
         }
 
-        // Set the current question text
         QuizQuestion currentQuestion = questions[index];
-        questionText.text = currentQuestion.questionText;
+        questionText.text = currentQuestion.questionText; // Set question text
 
-        // Handle video questions
+        // Handle video-type questions
         if (videoPlayer != null)
         {
-            // Check if the question is a video type and has a video clip
             bool isVideoQuestion = currentQuestion.type == QuizQuestion.QuestionType.Video && currentQuestion.questionVideo != null;
-
             videoPlayer.gameObject.SetActive(isVideoQuestion);
 
-            // If it's a video question, set the video clip and play it
             if (isVideoQuestion)
             {
                 videoPlayer.clip = currentQuestion.questionVideo;
-                videoPlayer.Play();
+                videoPlayer.Play(); // Play video
             }
         }
 
@@ -116,28 +119,27 @@ public class QuizManager : MonoBehaviour
             {
                 answerButtons[i].gameObject.SetActive(true);
                 answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = currentQuestion.answers[i];
-                
-                // Remove previous listeners and add new one
-                answerButtons[i].onClick.RemoveAllListeners();
+
+                answerButtons[i].onClick.RemoveAllListeners(); // Clear previous listeners
                 int buttonIndex = i; // Capture index for closure
-                answerButtons[i].onClick.AddListener(() => OnAnswerSelected(buttonIndex));
+                answerButtons[i].onClick.AddListener(() => OnAnswerSelected(buttonIndex)); // Add new listener
             }
             else
             {
-                answerButtons[i].gameObject.SetActive(false);
+                answerButtons[i].gameObject.SetActive(false); // Hide unused buttons
             }
         }
     }
 
-    // Handle answer selection
+    // Called when an answer is selected
     public void OnAnswerSelected(int answerIndex)
-    {   
-        // Prevent multiple answers being selected while waiting for feedback
-        if (isWaitingForNextQuestion) return;
+    {
+        if (isWaitingForNextQuestion) return; // Prevent multiple selections
 
         QuizQuestion currentQuestion = questions[currentQuestionIndex];
         bool isCorrect = (answerIndex == currentQuestion.correctAnswerIndex);
 
+        // Update score if correct and not already answered
         if (isCorrect && !currentQuestion.alreadyAnsweredCorrectly)
         {
             currentQuestion.alreadyAnsweredCorrectly = true;
@@ -145,29 +147,27 @@ public class QuizManager : MonoBehaviour
 
             if (!currentQuestion.hasBeenScored)
             {
-                GameManager.instance.ModifyScore(pointsPerCorrectAnswer);
+                GameManager.instance.ModifyScore(pointsPerCorrectAnswer); // Add points
                 currentQuestion.hasBeenScored = true;
             }
         }
 
-
-        ShowFeedback(isCorrect);
+        ShowFeedback(isCorrect); // Show feedback
         isWaitingForNextQuestion = true;
-        Invoke("MoveToNextQuestion", feedbackDisplayTime);
+        Invoke("MoveToNextQuestion", feedbackDisplayTime); // Wait then move on
     }
 
-    // Show feedback based on whether the answer was correct or wrong
+    // Displays feedback based on correctness of answer
     private void ShowFeedback(bool isCorrect)
-    {   
-        // Hide the video player if it exists
+    {
         if (videoPlayer != null)
-            videoPlayer.gameObject.SetActive(false);
+            videoPlayer.gameObject.SetActive(false); // Hide video
 
-        correctFeedback.SetActive(isCorrect);
-        wrongFeedback.SetActive(!isCorrect);
-        questionText.gameObject.SetActive(false);
+        correctFeedback.SetActive(isCorrect); // Show correct feedback
+        wrongFeedback.SetActive(!isCorrect); // Show wrong feedback
+        questionText.gameObject.SetActive(false); // Hide question text
 
-        // Play the appropriate sound
+        // Play sound
         if (isCorrect && correctAnswerSound != null)
         {
             audioSource.PlayOneShot(correctAnswerSound);
@@ -178,7 +178,7 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-    // Move to the next question after feedback is displayed
+    // Moves to the next question
     private void MoveToNextQuestion()
     {
         correctFeedback.SetActive(false);
@@ -186,18 +186,17 @@ public class QuizManager : MonoBehaviour
         isWaitingForNextQuestion = false;
         questionText.gameObject.SetActive(true);
         currentQuestionIndex++;
-        ShowQuestion(currentQuestionIndex);
+        ShowQuestion(currentQuestionIndex); // Show next question
     }
 
-    // End the quiz and display the results
+    // Ends the quiz and shows results
     private void EndQuiz()
-    {   
-        // Hide the video player if it exists
+    {
         if (videoPlayer != null)
-            videoPlayer.gameObject.SetActive(false);
+            videoPlayer.gameObject.SetActive(false); // Hide video
 
-        quizCompletePanel.SetActive(true);
-        questionText.gameObject.SetActive(false);
+        quizCompletePanel.SetActive(true); // Show completion panel
+        questionText.gameObject.SetActive(false); // Hide question
 
         // Hide all answer buttons
         foreach (var button in answerButtons)
@@ -205,29 +204,25 @@ public class QuizManager : MonoBehaviour
             button.gameObject.SetActive(false);
         }
 
-        // Display the final score
+        // Show final score
         scoreText.text = $"You answered {correctAnswersCount} out of {questions.Count} questions correctly!";
     }
 
-    // Restart the quiz, resetting the state and allowing replay of questions
+    // Restarts the quiz
     public void RestartQuiz()
     {
         correctAnswersCount = 0;
 
         foreach (var question in questions)
         {
-            question.alreadyAnsweredCorrectly = false; // allow replay
-            // DO NOT reset hasBeenScored
+            question.alreadyAnsweredCorrectly = false; // Allow replay
+            // Do not reset hasBeenScored to preserve scoring integrity
         }
 
-        // Reset the current question indexS
-        quizCompletePanel.SetActive(false);
-        questionText.gameObject.SetActive(true);
-        // Hide feedback panels
-        scoreText.text = "";
-        // Reset the video player
-        InitializeQuiz();
+        quizCompletePanel.SetActive(false); // Hide completion panel
+        questionText.gameObject.SetActive(true); // Show question text
+        scoreText.text = ""; // Clear score text
+
+        InitializeQuiz(); // Reinitialize quiz
     }
-
-
 }
