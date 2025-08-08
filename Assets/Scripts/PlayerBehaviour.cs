@@ -54,30 +54,32 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-        // Calculate how far player has moved since last frame
+        // Get raw input values (not affected by smoothing)
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
         
-        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+        bool isMoving = (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f);
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
 
-        // If player moved more than threshold and footstep audio is not playing, play it
-         
-        if (distanceMoved > moveThreshold)
+        // Play footsteps if moving (walking or sprinting)
+        if (isMoving)
         {
             if (!footstepAudio.isPlaying)
             {
+                // Adjust pitch/volume based on sprinting
+                footstepAudio.pitch = isSprinting ? 1.2f : 1f;
+                footstepAudio.volume = isSprinting ? 0.8f : 0.6f;
                 footstepAudio.Play();
             }
         }
         else
         {
-            // Player stopped or nearly stopped moving, stop footstep sound
             if (footstepAudio.isPlaying)
             {
                 footstepAudio.Stop();
             }
         }
 
-            // Update last position for next frame check
-            lastPosition = transform.position;
     }
 
     void HandleInteractionTarget(GameObject target)
