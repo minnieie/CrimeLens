@@ -5,12 +5,39 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/Level2.unity
-    guid: 2971cca62bf0e5347bc22761843e1742
+    path: Assets/Scenes/lobby.unity
+    guid: 67dee1d077b325149bed491d77c67be5
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/deepfakeRoom.unity
+    guid: 8de764577e13ff748b563288b7db09a3
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/PhishingRoom.unity
+    guid: 558d1692258279b4ea4282b4bcc79729
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/bankRoom.unity
+    guid: 53831bc850a8ba548855c7809c66518f
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/CallCentreRoom.unity
+    guid: 768e3df049c599b4c91ebcf4ba4b39fd
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/charityRoom.unity
+    guid: b4726436e9bda7b43a0c12ba66f02897
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/datingRoom.unity
+    guid: 7fdc129b561a7884382d090c210ca889
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/IcaRoom.unity
+    guid: 187e46bf51cab87419cfc67336d4b7a5
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/serverRoom.unity
+    guid: fc73c2ac500aa5142b9eb4f2d5bd9e82
+  - enabled: 1
+    path: Assets/Scenes/Seperate rooms/SpfRoom.unity
+    guid: ac8056b11c28ee64799e2a3afd0c62d1
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

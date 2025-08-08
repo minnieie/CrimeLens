@@ -3185,17 +3185,13 @@ PrefabInstance:
       propertyPath: playerModel
       value: 
       objectReference: {fileID: 1623805616}
+    - target: {fileID: 2193318596531776256, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 1995539935}
     - target: {fileID: 3334142357412468590, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3452081063898817811, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-      propertyPath: m_StreamingVersion
-      value: 20241001
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676184357317573234, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-      propertyPath: BlendUpdateMethod
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4700243871597512298, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3281,41 +3277,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8435731904250343540, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8513843607751112510, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 730973906}
-    m_RemovedComponents:
-    - {fileID: 3452081063898817811, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 637682636815863403, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1533334852}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
---- !u!1 &1533334851 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 637682636815863403, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
-  m_PrefabInstance: {fileID: 1533334850}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1533334852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533334851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fcc875912e1dcf4db09e0688ee7af92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreText: {fileID: 1995539935}
 --- !u!82 &1533334853 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 3334142357412468590, guid: ae451d704ca77fa4e92ed5d9a50431d8, type: 3}
