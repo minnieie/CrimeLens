@@ -10,6 +10,7 @@ TagManager:
   - Door
   - Computer
   - NPC
+  - Cabinet
   layers:
   - Default
   - TransparentFX

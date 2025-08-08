@@ -7,6 +7,7 @@ public class PlayerBehaviour : MonoBehaviour
     CoinBehaviour nearbyCoin;
     DoorBehaviour currentDoor;
     ComputerBehaviour computer;
+    private Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
     
@@ -36,6 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
         canInteract = false;
         nearbyCoin = null;
         currentDoor = null;
+        currentCabinet = null;
         npc = null;
 
         // Perform raycast detection
@@ -117,6 +119,12 @@ public class PlayerBehaviour : MonoBehaviour
                 Debug.Log("NPC found - canInteract set to true");
             }
         }
+        else if (target.CompareTag("Cabinet"))
+        {
+            canInteract = true;
+            currentCabinet = target.GetComponent<Cabinet>();
+            // Debug.Log("Cabinet found - canInteract set to true");
+        }
         else
         {
             ClearLastCoinHighlight();
@@ -162,6 +170,11 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Dialogue interaction triggered.");
             NPCBehaviour.dialogueActive = true;
             npc.StartDialogue();
+        }
+        else if (currentCabinet != null)
+        {
+            Debug.Log($"Interacting with cabinet: {currentCabinet.gameObject.name}");
+            currentCabinet.Interact();
         }
     }
 
