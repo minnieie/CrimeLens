@@ -898,7 +898,7 @@ MonoBehaviour:
   doorBOpenEuler: {x: 0, y: 90, z: 0}
   player: {fileID: 1989166327948534324}
   playerCamera: {fileID: 4700243870437479215}
-  hidePoint: {fileID: 1708026629}
+  hidePoint: {fileID: 5749651876701503191}
   hideAnchor: {fileID: 1708026629}
   doorOpenDuration: 0.5
   doorCloseDuration: 0.5

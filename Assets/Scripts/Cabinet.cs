@@ -79,7 +79,7 @@ public class Cabinet : MonoBehaviour
         if (rb != null)
         {
             rb.MovePosition(hideAnchor.position);
-            rb.MoveRotation(hidePoint.rotation * Quaternion.Euler(0f, 0f, 0f));
+            rb.MoveRotation(hidePoint.rotation * Quaternion.Euler(0f, -90f, 0f));
         }
         else
         {
