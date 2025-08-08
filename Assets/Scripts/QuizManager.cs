@@ -31,6 +31,11 @@ public class QuizManager : MonoBehaviour
     [Header("Video Display")]
     public GameObject videoDisplay; 
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource; 
+    public AudioClip correctAnswerSound;
+    public AudioClip wrongAnswerSound;
+
     [Header("UI References")]
     public TextMeshProUGUI questionText;
     public TextMeshProUGUI scoreText;
@@ -48,6 +53,7 @@ public class QuizManager : MonoBehaviour
     private int currentQuestionIndex = 0;
     private bool isWaitingForNextQuestion = false;
 
+    // Reference to the player camera and shared zoom camera
     private void Start()
     {
         InitializeQuiz();
@@ -55,6 +61,7 @@ public class QuizManager : MonoBehaviour
             restartButton.onClick.AddListener(RestartQuiz);
     }
 
+    // Initialize the quiz by resetting the question index and hiding feedback panels
     public void InitializeQuiz()
     {
         currentQuestionIndex = 0;
@@ -72,26 +79,29 @@ public class QuizManager : MonoBehaviour
         quizCompletePanel.SetActive(false);
     }
 
-
+    // Show the current question based on the index
     public void ShowQuestion(int index)
-    {
+    {   
+        // Check if the index is valid
         if (index >= questions.Count)
         {
             EndQuiz();
             return;
         }
 
+        // Set the current question text
         QuizQuestion currentQuestion = questions[index];
         questionText.text = currentQuestion.questionText;
 
         // Handle video questions
         if (videoPlayer != null)
         {
-            bool isVideoQuestion = currentQuestion.type == QuizQuestion.QuestionType.Video && 
-                                  currentQuestion.questionVideo != null;
+            // Check if the question is a video type and has a video clip
+            bool isVideoQuestion = currentQuestion.type == QuizQuestion.QuestionType.Video && currentQuestion.questionVideo != null;
 
             videoPlayer.gameObject.SetActive(isVideoQuestion);
 
+            // If it's a video question, set the video clip and play it
             if (isVideoQuestion)
             {
                 videoPlayer.clip = currentQuestion.questionVideo;
@@ -119,8 +129,10 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    // Handle answer selection
     public void OnAnswerSelected(int answerIndex)
     {   
+        // Prevent multiple answers being selected while waiting for feedback
         if (isWaitingForNextQuestion) return;
 
         QuizQuestion currentQuestion = questions[currentQuestionIndex];
@@ -144,13 +156,29 @@ public class QuizManager : MonoBehaviour
         Invoke("MoveToNextQuestion", feedbackDisplayTime);
     }
 
+    // Show feedback based on whether the answer was correct or wrong
     private void ShowFeedback(bool isCorrect)
-    {
+    {   
+        // Hide the video player if it exists
+        if (videoPlayer != null)
+            videoPlayer.gameObject.SetActive(false);
+
         correctFeedback.SetActive(isCorrect);
         wrongFeedback.SetActive(!isCorrect);
         questionText.gameObject.SetActive(false);
+
+        // Play the appropriate sound
+        if (isCorrect && correctAnswerSound != null)
+        {
+            audioSource.PlayOneShot(correctAnswerSound);
+        }
+        else if (!isCorrect && wrongAnswerSound != null)
+        {
+            audioSource.PlayOneShot(wrongAnswerSound);
+        }
     }
 
+    // Move to the next question after feedback is displayed
     private void MoveToNextQuestion()
     {
         correctFeedback.SetActive(false);
@@ -159,23 +187,28 @@ public class QuizManager : MonoBehaviour
         currentQuestionIndex++;
         ShowQuestion(currentQuestionIndex);
     }
+
+    // End the quiz and display the results
     private void EndQuiz()
-    {
+    {   
+        // Hide the video player if it exists
         if (videoPlayer != null)
             videoPlayer.gameObject.SetActive(false);
 
         quizCompletePanel.SetActive(true);
         questionText.gameObject.SetActive(false);
 
+        // Hide all answer buttons
         foreach (var button in answerButtons)
         {
             button.gameObject.SetActive(false);
         }
 
+        // Display the final score
         scoreText.text = $"You answered {correctAnswersCount} out of {questions.Count} questions correctly!";
     }
 
-
+    // Restart the quiz, resetting the state and allowing replay of questions
     public void RestartQuiz()
     {
         correctAnswersCount = 0;
@@ -186,11 +219,12 @@ public class QuizManager : MonoBehaviour
             // DO NOT reset hasBeenScored
         }
 
+        // Reset the current question indexS
         quizCompletePanel.SetActive(false);
         questionText.gameObject.SetActive(true);
-
+        // Hide feedback panels
         scoreText.text = "";
-
+        // Reset the video player
         InitializeQuiz();
     }
 
