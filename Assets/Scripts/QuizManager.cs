@@ -184,6 +184,7 @@ public class QuizManager : MonoBehaviour
         correctFeedback.SetActive(false);
         wrongFeedback.SetActive(false);
         isWaitingForNextQuestion = false;
+        questionText.gameObject.SetActive(true);
         currentQuestionIndex++;
         ShowQuestion(currentQuestionIndex);
     }
