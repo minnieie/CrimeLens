@@ -8,56 +8,57 @@ using UnityEngine.UI;
 
 public class NPCBehaviour : MonoBehaviour
 {
-    public string[] dialogueLines;
-    public TextMeshProUGUI dialogueText;
-    public TextMeshProUGUI nameText;
-    public float wordDelay = 0.3f;
-    public static bool dialogueActive = false;
-    private int currentLine = 0;
-    public static NPCBehaviour ActiveNPC = null;
+    public string[] dialogueLines; // Array of dialogue lines for the NPC
+    public TextMeshProUGUI dialogueText; // Text component to display dialogue
+    public TextMeshProUGUI nameText; // Text component to display NPC name
+    public float wordDelay = 0.3f; // Delay between words
+    public static bool dialogueActive = false; // Flag to check if dialogue is active
+    private int currentLine = 0; // Index of the current dialogue line
+    public static NPCBehaviour ActiveNPC = null; // Reference to the active NPC
 
+    // Start the dialogue with the NPC
     public void StartDialogue()
     {
         if (dialogueActive && dialogueLines.Length > 0)
         {
-            nameText.text = gameObject.name;
+            nameText.text = gameObject.name; // Set the NPC name
             dialogueText.text = "";
             // Activate the dialogue UI
             dialogueText.transform.parent.gameObject.SetActive(true);
-            ActiveNPC = this;
-            Debug.Log("Started interaction with " + gameObject.name);
+            ActiveNPC = this; // Set the active NPC
+            Debug.Log("Started interaction with " + gameObject.name); 
             dialogueActive = true;
             currentLine = 0;
-            StartCoroutine(ShowDialogueLine(dialogueLines[currentLine]));
+            StartCoroutine(ShowDialogueLine(dialogueLines[currentLine])); // Start showing the first line of dialogue
         }
         else
         {
-            StopDialogue();
+            StopDialogue(); // Stop any ongoing dialogue
             dialogueActive = false;
             ActiveNPC = null;
-            dialogueText.transform.parent.gameObject.SetActive(false);
-            Debug.LogWarning("Dialogue is already active or no dialogue lines are set for " + gameObject.name);
+            dialogueText.transform.parent.gameObject.SetActive(false); // Deactivate the dialogue UI
+            Debug.LogWarning("Dialogue is already active or no dialogue lines are set for " + gameObject.name); // Log a warning
         }
     }
 
     IEnumerator ShowDialogueLine(string line)
     {
         dialogueText.text = "";
-        string[] words = line.Split(' ');
-        for (int i = 0; i < words.Length; i++)
+        string[] words = line.Split(' '); // Split the line into individual words
+        for (int i = 0; i < words.Length; i++) // Iterate through each word
         {
             dialogueText.text += words[i] + " ";
-            yield return new WaitForSeconds(wordDelay);
+            yield return new WaitForSeconds(wordDelay); // Wait for the specified delay
         }
-        yield return new WaitForSeconds(1f);
-        currentLine++;
-        if (currentLine < dialogueLines.Length)
+        yield return new WaitForSeconds(1f); // Wait before showing the next line
+        currentLine++; // Move to the next line
+        if (currentLine < dialogueLines.Length) // Check if there are more lines
         {
-            StartCoroutine(ShowDialogueLine(dialogueLines[currentLine]));
+            StartCoroutine(ShowDialogueLine(dialogueLines[currentLine])); // Start showing the next line of dialogue
         }
         else
         {
-            StopDialogue();
+            StopDialogue(); // Stop any ongoing dialogue
         }
     }
 
@@ -65,9 +66,9 @@ public class NPCBehaviour : MonoBehaviour
     {
         dialogueActive = false;
         ActiveNPC = null;
-        dialogueText.transform.parent.gameObject.SetActive(false);
-        StopAllCoroutines();
-        dialogueText.text = "";
-        Debug.Log("Dialogue ended with " + gameObject.name);
-    }
+        dialogueText.transform.parent.gameObject.SetActive(false); // Deactivate the dialogue UI
+        StopAllCoroutines(); // Stop all ongoing coroutines
+        dialogueText.text = ""; // Clear the dialogue text
+        Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
+    } 
 }

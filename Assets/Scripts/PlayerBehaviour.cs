@@ -81,7 +81,6 @@ public class PlayerBehaviour : MonoBehaviour
                 footstepAudio.Stop();
             }
         }
-
     }
 
     void HandleInteractionTarget(GameObject target)
