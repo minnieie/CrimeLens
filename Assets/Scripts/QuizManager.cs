@@ -33,6 +33,10 @@ public class QuizManager : MonoBehaviour
     public List<QuizQuestion> questions; // List of all quiz questions
     public float feedbackDisplayTime = 2f; // Time to show feedback before moving on
 
+    [Header("Startup Settings")]
+    public bool startImmediately = true; // Set to false for kiosk mode
+    public GameObject quizPanel; // Assign your quiz UI container
+
     [Header("Video Display")]
     public GameObject videoDisplay; // UI object to display video
 
@@ -45,6 +49,7 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI questionText; // UI text for displaying question
     public TextMeshProUGUI scoreText; // UI text for displaying score
     public Button restartButton; // Button to restart the quiz
+    public Image questionUIImage; 
 
     [Header("Scoring")]
     public int pointsPerCorrectAnswer = 10; // Points awarded per correct answer
@@ -62,10 +67,20 @@ public class QuizManager : MonoBehaviour
     // Called when the game starts
     private void Start()
     {
-        InitializeQuiz(); // Set up the quiz
+        if (startImmediately)
+        {
+            quizPanel.SetActive(true);
+            InitializeQuiz();
+        }
+        else
+        {
+            quizPanel.SetActive(false); // Wait for external trigger
+        }
+
         if (restartButton != null)
-            restartButton.onClick.AddListener(RestartQuiz); // Assign restart button listener
+            restartButton.onClick.AddListener(RestartQuiz);
     }
+
 
     // Initializes the quiz state
     public void InitializeQuiz()
@@ -89,6 +104,8 @@ public class QuizManager : MonoBehaviour
     // Displays the question at the given index
     public void ShowQuestion(int index)
     {
+        Debug.Log("Questions count at start: " + questions.Count);
+        Debug.Log("Current question index: " + currentQuestionIndex);
         // If index is out of bounds, end the quiz
         if (index >= questions.Count)
         {
@@ -127,6 +144,20 @@ public class QuizManager : MonoBehaviour
             else
             {
                 answerButtons[i].gameObject.SetActive(false); // Hide unused buttons
+            }
+        }
+        
+        // Show question image if available
+        if (questionUIImage != null)
+        {
+            if (currentQuestion.questionImage != null)
+            {
+                questionUIImage.sprite = currentQuestion.questionImage;
+                questionUIImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                questionUIImage.gameObject.SetActive(false); // Hide if no image
             }
         }
     }
@@ -180,7 +211,9 @@ public class QuizManager : MonoBehaviour
 
     // Moves to the next question
     private void MoveToNextQuestion()
-    {
+    {   
+        Debug.Log("Moving to next question: " + currentQuestionIndex);
+
         correctFeedback.SetActive(false);
         wrongFeedback.SetActive(false);
         isWaitingForNextQuestion = false;

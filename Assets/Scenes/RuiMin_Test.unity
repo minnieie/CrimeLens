@@ -2823,6 +2823,9 @@ MonoBehaviour:
   dialogueText: {fileID: 1888371192}
   nameText: {fileID: 0}
   wordDelay: 0.3
+  audioSource: {fileID: 0}
+  talkingClip: {fileID: 0}
+  interactPrompt: {fileID: 0}
 --- !u!136 &1526223386
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3558,6 +3561,8 @@ MonoBehaviour:
     alreadyAnsweredCorrectly: 0
     hasBeenScored: 0
   feedbackDisplayTime: 2
+  startImmediately: 1
+  quizPanel: {fileID: 0}
   videoDisplay: {fileID: 0}
   audioSource: {fileID: 0}
   correctAnswerSound: {fileID: 0}
@@ -4465,6 +4470,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1056235014}
     - target: {fileID: 4110246855245229720, guid: 4083c124b69f06d4ba3117c10b488cef, type: 3}
+      propertyPath: quizManager
+      value: 
+      objectReference: {fileID: 7699367090159957480}
+    - target: {fileID: 4110246855245229720, guid: 4083c124b69f06d4ba3117c10b488cef, type: 3}
       propertyPath: sharedZoomCam
       value: 
       objectReference: {fileID: 1773792238}
@@ -4513,6 +4522,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4083c124b69f06d4ba3117c10b488cef, type: 3}
+--- !u!114 &7699367090159957480 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6034296535430478155, guid: 4083c124b69f06d4ba3117c10b488cef, type: 3}
+  m_PrefabInstance: {fileID: 7699367090159957479}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4807e1f5cf091d840964233f9696c2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
