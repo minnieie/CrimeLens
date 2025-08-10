@@ -25,6 +25,9 @@ public class PlayerBehaviour : MonoBehaviour
     // Store the last frame's interaction state
     private bool hadInteractableLastFrame = false;
 
+    // Respawn point for the player
+    public Vector3 respawnPoint; // Assign this in the Inspector
+
     void Start()
     {
         string currentScene = SceneManager.GetActiveScene().name;
@@ -199,4 +202,11 @@ public class PlayerBehaviour : MonoBehaviour
             return;
         }
     }
+
+    public void SetRespawnPoint(Vector3 newPoint)
+    {
+        respawnPoint = newPoint;
+        Debug.Log("Respawn point set to: " + respawnPoint);
+    }
+
 }
