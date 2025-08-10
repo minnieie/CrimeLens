@@ -317,6 +317,16 @@ public class Chaser : MonoBehaviour
             Debug.Log("Max strikes reached. Calling for backup!");
             OnThirdStrike?.Invoke();
             StartCoroutine(CallForBackup());
+
+            if (player != null)
+            {
+                PlayerBehaviour playerRespawn = player.GetComponent<PlayerBehaviour>();
+                if (playerRespawn != null)
+                {
+                    player.position = playerRespawn.respawnPoint; // Disable player interaction while captcha is active
+                    Debug.Log("Player sent to respawn point");
+                }
+            }
         }
     }
 
