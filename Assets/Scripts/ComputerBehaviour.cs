@@ -3,47 +3,73 @@ using Unity.Cinemachine;
 using StarterAssets;
 using System.Collections;
 
+// <summary>
+// This script handles player interaction with a computer terminal in a first-person game.
+// When the player enters the trigger zone, a UI prompt appears.
+// Pressing 'E' starts the interaction: switches camera, shows UI, disables player movement.
+// Exiting the trigger zone or ending interaction restores the player state.
 
 public class ComputerBehaviour : MonoBehaviour
 {
     [Header("Camera Setup")]
-    public CinemachineVirtualCamera sharedZoomCam; // Assign one shared cam in the scene
-    public CinemachineVirtualCamera playerCam;     // Your FPS player camera
-    public Transform zoomTarget;                   // This is the target near the computer screen
+    public CinemachineVirtualCamera sharedZoomCam; // Shared camera that zooms into the computer
+    public CinemachineVirtualCamera playerCam;     // Player's default FPS camera
+    public Transform zoomTarget;                   // Target position near the computer screen
 
     [Header("UI and Player")]
-    public GameObject computerUI;                  // UI to show during interaction
-    public GameObject player;                      // Your player GameObject
-
-    public MonoBehaviour lookScript; // Assign your look script in the Inspector
-
-    private bool isInteracting = false;
-
-    public bool IsInteracting => isInteracting;
-
-    public static ComputerBehaviour ActiveComputer = null;
+    public GameObject computerUI;                  // UI shown during interaction (e.g., quiz)
+    public GameObject player;                      // Player GameObject
+    public MonoBehaviour lookScript;               // Optional: script controlling player look
+    public GameObject interactionPrompt;           // UI prompt shown when player is in range
 
     [Header("Quiz System")]
-    public QuizManager quizManager;
+    public QuizManager quizManager;                // Reference to quiz logic
+
+    private bool isInteracting = false;            // Tracks if player is currently interacting
+    private bool playerInRange = false;            // Tracks if player is in trigger zone
+
+    public bool IsInteracting => isInteracting;    // Public read-only access to interaction state
+    public static ComputerBehaviour ActiveComputer = null; // Tracks currently active computer
 
     void Start()
     {
-        // Set correct camera priorities
+        // Set initial camera priorities
         if (playerCam != null) playerCam.Priority = 20;
         if (sharedZoomCam != null) sharedZoomCam.Priority = 10;
 
-        // Hide computer UI at start
+        // Hide computer UI and interaction prompt at start
         if (computerUI != null) computerUI.SetActive(false);
+        if (interactionPrompt != null) interactionPrompt.SetActive(false);
 
-        // Enable player movement at start
+        // Enable player movement
         if (player != null)
             player.GetComponent<FirstPersonController>().enabled = true;
 
         isInteracting = false;
     }
 
-    public void StartInteraction()
+    void Update()
     {
+        // Listen for interaction key when player is in range and not already interacting
+        if (playerInRange && !isInteracting && Input.GetKeyDown(KeyCode.E))
+        {
+            StartInteraction();
+
+            // Hide prompt once interaction begins
+            if (interactionPrompt != null)
+                interactionPrompt.SetActive(false);
+        }
+    }
+
+    public void StartInteraction()
+    {   
+         // Hide interaction prompt just in case
+        if (interactionPrompt != null)
+            interactionPrompt.SetActive(false);
+
+        playerInRange = false; // Prevent prompt from reappearing
+
+        // Hide player renderers for immersion
         foreach (var renderer in player.GetComponentsInChildren<Renderer>())
         {
             renderer.enabled = false;
@@ -51,18 +77,17 @@ public class ComputerBehaviour : MonoBehaviour
 
         if (isInteracting) return;
         ActiveComputer = this;
-
-        Debug.Log("StartInteraction called on " + gameObject.name);
         isInteracting = true;
 
-        // Point sharedZoomCam to this computer's zoom target
+        Debug.Log("StartInteraction called on " + gameObject.name);
+
+        // Switch to zoom camera
         if (sharedZoomCam != null && zoomTarget != null)
         {
             sharedZoomCam.LookAt = zoomTarget;
             sharedZoomCam.Follow = zoomTarget;
             sharedZoomCam.Priority = 20;
             playerCam.Priority = 10;
-            Debug.Log("Switched to sharedZoomCam at " + zoomTarget.name);
         }
         else
         {
@@ -71,27 +96,24 @@ public class ComputerBehaviour : MonoBehaviour
 
         // Show computer UI
         if (computerUI != null)
-        {
             computerUI.SetActive(true);
-        }
 
-        // Start quiz
+        // Initialize quiz
         if (quizManager != null)
-        {
-            quizManager.InitializeQuiz(); // resets and shows first question for this computer
-        }
+            quizManager.InitializeQuiz();
 
-        // Show cursor
+        // Show cursor for UI interaction
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Disable player GameObject
+        // Disable player movement
         if (player != null)
             player.GetComponent<FirstPersonController>().enabled = false;
     }
 
     public void EndInteraction()
     {
+        // Re-enable player renderer
         MeshRenderer playerRenderer = player.GetComponent<MeshRenderer>();
         if (playerRenderer != null)
             playerRenderer.enabled = true;
@@ -108,40 +130,50 @@ public class ComputerBehaviour : MonoBehaviour
 
         // Hide computer UI
         if (computerUI != null)
-        {
             computerUI.SetActive(false);
-        }
 
         // Lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // Enable player GameObject
+        // Re-enable player movement
         if (player != null)
             player.GetComponent<FirstPersonController>().enabled = true;
 
         ActiveComputer = null;
 
-        StartCoroutine(ReenablePlayerRenderersAfterDelay(1.5f)); // Delay in seconds
-
+        // Delay before showing player renderers again
+        StartCoroutine(ReenablePlayerRenderersAfterDelay(1.5f));
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player in range");
-            // Optional: Show interaction prompt
+            playerInRange = true;
+
+            // Only show prompt if not interacting
+            if (!isInteracting && interactionPrompt != null)
+                interactionPrompt.SetActive(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && isInteracting)
+        if (other.CompareTag("Player"))
         {
-            EndInteraction();
+            playerInRange = false;
+
+            // Hide interaction prompt
+            if (interactionPrompt != null)
+                interactionPrompt.SetActive(false);
+
+            // End interaction if player walks away
+            if (isInteracting)
+                EndInteraction();
         }
     }
+
     private IEnumerator ReenablePlayerRenderersAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -151,5 +183,4 @@ public class ComputerBehaviour : MonoBehaviour
             renderer.enabled = true;
         }
     }
-
 }

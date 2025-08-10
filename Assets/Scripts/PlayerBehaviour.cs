@@ -56,6 +56,12 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
+        if (ComputerBehaviour.ActiveComputer != null && ComputerBehaviour.ActiveComputer.IsInteracting)
+        {
+            // Skip raycast interaction while using computer
+            return;
+        }
+
         // Get raw input values (not affected by smoothing)
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -151,10 +157,11 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log($"Interacting with door: {currentDoor.gameObject.name}");
             currentDoor.OpenDoors();
         }
-        else if (ComputerBehaviour.ActiveComputer != null)
+        else if (npc != null)
         {
-            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
-            ComputerBehaviour.ActiveComputer.EndInteraction();
+            Debug.Log("Dialogue interaction triggered.");
+            NPCBehaviour.dialogueActive = true;
+            npc.StartDialogue();
         }
         else if (computer != null)
         {
@@ -164,11 +171,10 @@ public class PlayerBehaviour : MonoBehaviour
                 computer.StartInteraction();
             }
         }
-        else if (npc != null)
+        else if (ComputerBehaviour.ActiveComputer != null)
         {
-            Debug.Log("Dialogue interaction triggered.");
-            NPCBehaviour.dialogueActive = true;
-            npc.StartDialogue();
+            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
+            ComputerBehaviour.ActiveComputer.EndInteraction();
         }
         else if (currentCabinet != null)
         {
@@ -176,6 +182,7 @@ public class PlayerBehaviour : MonoBehaviour
             currentCabinet.Interact();
         }
     }
+
 
     void OnTriggerEnter(Collider other)
     {

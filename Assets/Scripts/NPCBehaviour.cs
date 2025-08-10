@@ -16,11 +16,11 @@ public class NPCBehaviour : MonoBehaviour
     private int currentLine = 0; // Index of the current dialogue line
     public static NPCBehaviour ActiveNPC = null; // Reference to the active NPC
 
-    // 🔊 Added: Audio support
+    // Added: Audio support
     public AudioSource audioSource; // Assign in Inspector
     public AudioClip talkingClip;   // Assign in Inspector
 
-    // 🖼️ Added: UI prompt for interaction
+    // Added: UI prompt for interaction
     public TextMeshProUGUI interactPrompt; // Assign in Inspector
 
     // Start the dialogue with the NPC
@@ -37,7 +37,7 @@ public class NPCBehaviour : MonoBehaviour
             dialogueActive = true;
             currentLine = 0;
 
-            // 🔊 Start looping sound
+            // Start looping sound
             if (audioSource != null && talkingClip != null)
             {
                 audioSource.clip = talkingClip;
@@ -86,7 +86,7 @@ public class NPCBehaviour : MonoBehaviour
         StopAllCoroutines(); // Stop all ongoing coroutines
         dialogueText.text = ""; // Clear the dialogue text
 
-        // 🔇 Stop looping sound
+        // Stop looping sound
         if (audioSource != null)
         {
             audioSource.Stop();
@@ -95,7 +95,7 @@ public class NPCBehaviour : MonoBehaviour
         Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
     }
 
-    // 🧭 Show interaction prompt when player is nearby
+    // Show interaction prompt when player is nearby
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && interactPrompt != null)
