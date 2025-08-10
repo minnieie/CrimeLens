@@ -9,6 +9,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI scoreText;
 
+    [Header("Return Spawn Settings")]
+    public string lastSceneName;
+    public string nextSceneName;
+    public string returnSpawnID;
+    public bool useReturnSpawn;
+    public Vector3 returnSpawnPosition;
+
+
     void Awake()
     {
         // This is a LAZY singleton
@@ -21,6 +29,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this; // If the instance is already set, do nothing
             DontDestroyOnLoad(gameObject); // Keep this instance across scenes
+            Debug.Log("GameManager initialized in scene: " + UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 

@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -10,23 +12,35 @@ public class PlayerBehaviour : MonoBehaviour
     private Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
-    
+
     // Movement variables
     public AudioSource footstepAudio;
     public float moveThreshold = 0.1f;
     private Vector3 lastPosition;
-    
+
     // Configuration
     [SerializeField] Transform spawnPoint;
     [SerializeField] float interactionDistance = 3.0f;
-    
+
     // Store the last frame's interaction state
     private bool hadInteractableLastFrame = false;
 
     void Start()
     {
-        lastPosition = transform.position;
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (GameManager.instance.useReturnSpawn && currentScene == "lobby")
+        {
+            transform.position = GameManager.instance.returnSpawnPosition;
+            GameManager.instance.useReturnSpawn = false;
+            Debug.Log("Spawned at saved lobby position: " + transform.position);
+        }
+        else
+        {
+            Debug.Log("Using default spawn in: " + currentScene);
+        }
     }
+
 
     void Update()
     {
@@ -56,16 +70,10 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
 
-        if (ComputerBehaviour.ActiveComputer != null && ComputerBehaviour.ActiveComputer.IsInteracting)
-        {
-            // Skip raycast interaction while using computer
-            return;
-        }
-
         // Get raw input values (not affected by smoothing)
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-        
+
         bool isMoving = (Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f);
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
 
@@ -109,7 +117,7 @@ public class PlayerBehaviour : MonoBehaviour
         else if (target.CompareTag("Computer"))
         {
             computer = target.GetComponent<ComputerBehaviour>() ?? target.GetComponentInParent<ComputerBehaviour>();
-            if (computer != null) 
+            if (computer != null)
             {
                 canInteract = true;
                 Debug.Log($"Computer found - canInteract set to true");
@@ -135,7 +143,7 @@ public class PlayerBehaviour : MonoBehaviour
             ClearLastCoinHighlight();
         }
     }
-    
+
     void ClearLastCoinHighlight()
     {
         if (lastCoin != null)
@@ -157,11 +165,10 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log($"Interacting with door: {currentDoor.gameObject.name}");
             currentDoor.OpenDoors();
         }
-        else if (npc != null)
+        else if (ComputerBehaviour.ActiveComputer != null)
         {
-            Debug.Log("Dialogue interaction triggered.");
-            NPCBehaviour.dialogueActive = true;
-            npc.StartDialogue();
+            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
+            ComputerBehaviour.ActiveComputer.EndInteraction();
         }
         else if (computer != null)
         {
@@ -171,10 +178,11 @@ public class PlayerBehaviour : MonoBehaviour
                 computer.StartInteraction();
             }
         }
-        else if (ComputerBehaviour.ActiveComputer != null)
+        else if (npc != null)
         {
-            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
-            ComputerBehaviour.ActiveComputer.EndInteraction();
+            Debug.Log("Dialogue interaction triggered.");
+            NPCBehaviour.dialogueActive = true;
+            npc.StartDialogue();
         }
         else if (currentCabinet != null)
         {
@@ -182,7 +190,6 @@ public class PlayerBehaviour : MonoBehaviour
             currentCabinet.Interact();
         }
     }
-
 
     void OnTriggerEnter(Collider other)
     {
