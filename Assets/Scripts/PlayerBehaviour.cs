@@ -29,6 +29,9 @@ public class PlayerBehaviour : MonoBehaviour
     // Respawn point for the player
     public Vector3 respawnPoint; // Assign this in the Inspector
 
+    // Captcha UI
+    // public bool isUILocked = false;
+
     void Start()
     {
         string currentScene = SceneManager.GetActiveScene().name;

@@ -25,8 +25,8 @@ public class Chaser : MonoBehaviour
 
     private int patrolIndex = 0;       // Current patrol point index
     private int currentStrikes = 0;    // How many times the player has been detected
-    private float currentCooldown = 0f;      // Timer to reduce strike count
-    private float strikeCooldownTimer = 0f;  // Prevents spamming strikes too quickly
+    private float currentCooldown = 30f;      // Timer to reduce strike count
+    private float strikeCooldownTimer = 5f;  // Prevents spamming strikes too quickly
 
     private AIState currentState = AIState.Idle;         // Current AI state
     private UnityEngine.Coroutine stateRoutine;         // Keeps track of which coroutine is running
