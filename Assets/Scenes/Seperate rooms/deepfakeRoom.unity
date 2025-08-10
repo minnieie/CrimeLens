@@ -22355,7 +22355,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.9250566, b: 0.84339625, a: 1}
-  m_Intensity: 9
+  m_Intensity: 11.15
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
