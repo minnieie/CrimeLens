@@ -38,6 +38,7 @@ public class Chaser : MonoBehaviour
     [SerializeField] private GameObject[] npcPrefabs; // Prefab to instantiate for backup
     [SerializeField] float spawnRadiusMin = 1f;
     [SerializeField] float spawnRadiusMax = 2f;
+    [SerializeField] private int numberOfNPCs = 2;
     [SerializeField] bool hasSpawned = false; 
     [SerializeField] float backupCooldown = 5f; // Cooldown for calling backup
     [SerializeField] float spawnGracePeriod = 3f; // How long backup NPCs stay
@@ -287,16 +288,16 @@ public class Chaser : MonoBehaviour
         lastBackupTime = Time.time;
 
         hasSpawned = true;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < numberOfNPCs; i++)
         {
-            Vector3 randomOffset = UnityEngine.Random.insideUnitSphere;
+            Vector3 randomOffset = Random.insideUnitSphere;
             randomOffset.y = 0; // Keep spawn position on the ground
-            randomOffset = randomOffset.normalized * UnityEngine.Random.Range(spawnRadiusMin, spawnRadiusMax);
+            randomOffset = randomOffset.normalized * Random.Range(spawnRadiusMin, spawnRadiusMax);
             Vector3 spawnPosition = transform.position + randomOffset;
 
             int prefabIndex = Random.Range(0, npcPrefabs.Length);
             GameObject chosenPrefab = npcPrefabs[prefabIndex];
-            
+
             Instantiate(chosenPrefab, spawnPosition, Quaternion.identity);
             Debug.Log("Backup NPC spawned at: " + spawnPosition);
         }
