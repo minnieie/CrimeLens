@@ -28801,7 +28801,6 @@ MonoBehaviour:
   player: {fileID: 789073138}
   interactionPrompt: {fileID: 1289582171}
   quizManager: {fileID: 0}
-  isUSBOnly: 0
 --- !u!222 &4270433179276030534
 CanvasRenderer:
   m_ObjectHideFlags: 0
