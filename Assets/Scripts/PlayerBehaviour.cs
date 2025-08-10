@@ -160,13 +160,17 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (nearbyCoin != null)
         {
-            Debug.Log($"Interacting with coin: {nearbyCoin.gameObject.name}");
             nearbyCoin.Collect(this);
         }
         else if (currentDoor != null)
         {
-            Debug.Log($"Interacting with door: {currentDoor.gameObject.name}");
             currentDoor.OpenDoors();
+        }
+        else if (npc != null)
+        {
+            Debug.Log("Dialogue interaction triggered.");
+            NPCBehaviour.dialogueActive = true;
+            npc.StartDialogue();
         }
         else if (ComputerBehaviour.ActiveComputer != null)
         {
@@ -181,15 +185,8 @@ public class PlayerBehaviour : MonoBehaviour
                 computer.StartInteraction();
             }
         }
-        else if (npc != null)
-        {
-            Debug.Log("Dialogue interaction triggered.");
-            NPCBehaviour.dialogueActive = true;
-            npc.StartDialogue();
-        }
         else if (currentCabinet != null)
         {
-            Debug.Log($"Interacting with cabinet: {currentCabinet.gameObject.name}");
             currentCabinet.Interact();
         }
     }
