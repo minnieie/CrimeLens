@@ -19,7 +19,6 @@ public class ComputerBehaviour : MonoBehaviour
     [Header("UI and Player")]
     public GameObject computerUI;                  // UI shown during interaction (e.g., quiz)
     public GameObject player;                      // Player GameObject
-    public MonoBehaviour lookScript;               // Optional: script controlling player look
     public GameObject interactionPrompt;           // UI prompt shown when player is in range
 
     [Header("Quiz System")]
@@ -50,16 +49,21 @@ public class ComputerBehaviour : MonoBehaviour
 
     void Update()
     {
-        // Listen for interaction key when player is in range and not already interacting
-        if (playerInRange && !isInteracting && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            StartInteraction();
-
-            // Hide prompt once interaction begins
-            if (interactionPrompt != null)
-                interactionPrompt.SetActive(false);
+            float distance = Vector3.Distance(player.transform.position, transform.position);
+            Debug.Log($"Distance to computer: {distance}");
+            if (distance <= 3f)  // or your interactionDistance
+            {
+                StartInteraction();
+            }
+            else
+            {
+                Debug.Log("Too far from computer to interact");
+            }
         }
     }
+
 
     public void StartInteraction()
     {   

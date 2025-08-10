@@ -136,7 +136,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
         else if (target.CompareTag("Cabinet"))
-        {
+        {   
             canInteract = true;
             currentCabinet = target.GetComponent<Cabinet>();
             // Debug.Log("Cabinet found - canInteract set to true");
@@ -172,6 +172,11 @@ public class PlayerBehaviour : MonoBehaviour
             NPCBehaviour.dialogueActive = true;
             npc.StartDialogue();
         }
+        else if (currentCabinet != null)  
+        {   
+            Debug.Log("Interacting with Cabinet: " + currentCabinet.gameObject.name);
+            currentCabinet.Interact();
+        }
         else if (ComputerBehaviour.ActiveComputer != null)
         {
             Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
@@ -185,11 +190,8 @@ public class PlayerBehaviour : MonoBehaviour
                 computer.StartInteraction();
             }
         }
-        else if (currentCabinet != null)
-        {
-            currentCabinet.Interact();
-        }
     }
+
 
     void OnTriggerEnter(Collider other)
     {
