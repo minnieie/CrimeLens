@@ -79,14 +79,13 @@ public class DoorBehaviour : MonoBehaviour
     // Toggle door state between open and closed
     public void ToggleDoor()
     {
-        isOpen = !isOpen;
         if (isOpen)
         {
-            OpenDoors();
+            CloseDoors();
         }
         else
         {
-            CloseDoors();
+            OpenDoors();
         }
     }
 

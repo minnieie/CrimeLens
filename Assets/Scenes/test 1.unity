@@ -1031,7 +1031,7 @@ Transform:
   m_GameObject: {fileID: 671784821}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1069,16 +1069,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 671784821}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a486c6cb824adf049a18990537c4320e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1573ba33870db1348b7351e11c12ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   doorA: {fileID: 213866601}
   doorB: {fileID: 1530667958}
-  doorARotation: {x: 0, y: -90, z: 0}
-  doorBRotation: {x: 0, y: 90, z: 0}
-  requiresKeyPress: 1
-  audioSource: {fileID: 0}
-  doorOpenSound: {fileID: 0}
+  doorAOpenEuler: {x: 0, y: -90, z: 0}
+  doorBOpenEuler: {x: 0, y: 90, z: 0}
+  doorOpenDuration: 1
+  doorCloseDuration: 1
 --- !u!1 &683777081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,50 +1727,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1051071553
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1051071555}
-  - component: {fileID: 1051071554}
-  m_Layer: 0
-  m_Name: Backup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1051071554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051071553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af32df31639c2b642832a20afe5003c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1051071555
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1051071553}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.14642036, y: -29.124802, z: 34.320217}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4263,7 +4218,6 @@ SceneRoots:
   - {fileID: 877114040}
   - {fileID: 451754867}
   - {fileID: 1524388639}
-  - {fileID: 1051071555}
   - {fileID: 1077700631}
   - {fileID: 1519610511}
   - {fileID: 683777084}
