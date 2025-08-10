@@ -41,7 +41,6 @@ public class Chaser : MonoBehaviour
     [SerializeField] private int numberOfNPCs = 2;
     [SerializeField] bool hasSpawned = false; 
     [SerializeField] float backupCooldown = 5f; // Cooldown for calling backup
-    [SerializeField] float spawnGracePeriod = 3f; // How long backup NPCs stay
     float lastBackupTime = -Mathf.Infinity;
 
     // Runs when the game starts (before Start)
