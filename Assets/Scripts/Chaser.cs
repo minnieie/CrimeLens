@@ -34,6 +34,15 @@ public class Chaser : MonoBehaviour
     // Event triggered on third strike
     public static event System.Action OnThirdStrike;
 
+    [Header("CallForBackup Settings")]
+    [SerializeField] private GameObject[] npcPrefabs; // Prefab to instantiate for backup
+    [SerializeField] float spawnRadiusMin = 1f;
+    [SerializeField] float spawnRadiusMax = 2f;
+    [SerializeField] bool hasSpawned = false; 
+    [SerializeField] float backupCooldown = 5f; // Cooldown for calling backup
+    [SerializeField] float spawnGracePeriod = 3f; // How long backup NPCs stay
+    float lastBackupTime = -Mathf.Infinity;
+
     // Runs when the game starts (before Start)
     void Awake()
     {
@@ -267,6 +276,33 @@ public class Chaser : MonoBehaviour
         SwitchState(AIState.Patrol);
     }
 
+    IEnumerator CallForBackup()
+    {
+        if (Time.time - lastBackupTime < backupCooldown)
+        {
+            SwitchState(AIState.Idle);
+            yield break;
+        }
+
+        lastBackupTime = Time.time;
+
+        hasSpawned = true;
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 randomOffset = UnityEngine.Random.insideUnitSphere;
+            randomOffset.y = 0; // Keep spawn position on the ground
+            randomOffset = randomOffset.normalized * UnityEngine.Random.Range(spawnRadiusMin, spawnRadiusMax);
+            Vector3 spawnPosition = transform.position + randomOffset;
+
+            int prefabIndex = Random.Range(0, npcPrefabs.Length);
+            GameObject chosenPrefab = npcPrefabs[prefabIndex];
+            
+            Instantiate(chosenPrefab, spawnPosition, Quaternion.identity);
+            Debug.Log("Backup NPC spawned at: " + spawnPosition);
+        }
+
+    }
+
     // Handle detection logic
     private void RegisterStrike()
     {
@@ -280,6 +316,7 @@ public class Chaser : MonoBehaviour
         {
             Debug.Log("Max strikes reached. Calling for backup!");
             OnThirdStrike?.Invoke();
+            StartCoroutine(CallForBackup());
         }
     }
 

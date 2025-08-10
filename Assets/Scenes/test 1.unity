@@ -1270,6 +1270,9 @@ MonoBehaviour:
   dialogueText: {fileID: 2101273762}
   nameText: {fileID: 867651496}
   wordDelay: 0.3
+  audioSource: {fileID: 0}
+  talkingClip: {fileID: 0}
+  interactPrompt: {fileID: 0}
 --- !u!1 &867651494
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,6 +1707,9 @@ MonoBehaviour:
   dialogueText: {fileID: 2101273762}
   nameText: {fileID: 0}
   wordDelay: 0.3
+  audioSource: {fileID: 0}
+  talkingClip: {fileID: 0}
+  interactPrompt: {fileID: 0}
 --- !u!4 &1104718222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 82617446396995084, guid: 1d04bea432abd0947a8ced1dba101bb7, type: 3}
@@ -2001,6 +2007,12 @@ MonoBehaviour:
   hearingRadius: 10
   hearingAngle: 90
   strikeCooldownDuration: 2
+  npcPrefab: {fileID: 1524388640}
+  spawnRadiusMin: 1
+  spawnRadiusMax: 2
+  hasSpawned: 0
+  backupCooldown: 3
+  spawnGracePeriod: 2
 --- !u!195 &1524388645
 NavMeshAgent:
   m_ObjectHideFlags: 0
