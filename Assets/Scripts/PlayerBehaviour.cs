@@ -30,7 +30,7 @@ public class PlayerBehaviour : MonoBehaviour
     public Vector3 respawnPoint; // Assign this in the Inspector
 
     // Captcha UI
-    // public bool isUILocked = false;
+    public bool isUILocked = false;
 
     void Start()
     {
