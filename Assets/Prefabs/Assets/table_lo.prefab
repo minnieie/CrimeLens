@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 2198794625936655744}
   - component: {fileID: 2345250991416418447}
   - component: {fileID: 3235875822437452134}
+  - component: {fileID: 5976320962668751241}
+  - component: {fileID: 1028642982319631741}
   m_Layer: 0
   m_Name: drawer2
-  m_TagString: Untagged
+  m_TagString: DeskDrawer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,6 +111,42 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 48659126932902298, guid: 4344adfc0cc82914ab854247eca00767, type: 3}
+--- !u!114 &5976320962668751241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108715255348021505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df26204c6f85b2b4cafa1b640362c753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawerPart: {fileID: 0}
+  openDistance: 0.1
+  openSpeed: 3
+--- !u!65 &1028642982319631741
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108715255348021505}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.39, y: 0.034495283, z: 0.38}
+  m_Center: {x: -0.00000004842878, y: -0.000000013038516, z: -0.0022746923}
 --- !u!1 &2887108169464334017
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,9 +159,11 @@ GameObject:
   - component: {fileID: 4225480560830189429}
   - component: {fileID: 2042571179540135859}
   - component: {fileID: 7975474530541485591}
+  - component: {fileID: 3084185190906717226}
+  - component: {fileID: 4334039617304444547}
   m_Layer: 0
   m_Name: drawer
-  m_TagString: Untagged
+  m_TagString: DeskDrawer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -218,6 +258,42 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8930740714778682797, guid: 4344adfc0cc82914ab854247eca00767, type: 3}
+--- !u!114 &3084185190906717226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887108169464334017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df26204c6f85b2b4cafa1b640362c753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawerPart: {fileID: 0}
+  openDistance: 0.1
+  openSpeed: 3
+--- !u!65 &4334039617304444547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887108169464334017}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.13797273, y: 0.034495283, z: 0.17196916}
+  m_Center: {x: -0.00000004842878, y: -0.000000013038516, z: -0.0022742155}
 --- !u!1 &3555696119537864907
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,9 +451,11 @@ GameObject:
   - component: {fileID: 8844672257977173741}
   - component: {fileID: 4905111713982367338}
   - component: {fileID: 426067207722772181}
+  - component: {fileID: 4810400141600452241}
+  - component: {fileID: 4611991546972550}
   m_Layer: 0
   m_Name: drawer1
-  m_TagString: Untagged
+  m_TagString: DeskDrawer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -472,6 +550,42 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1570039939185469503, guid: 4344adfc0cc82914ab854247eca00767, type: 3}
+--- !u!65 &4810400141600452241
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6167661134286402431}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.39, y: 0.034495283, z: 0.38}
+  m_Center: {x: -0.00000004842878, y: -0.000000013038516, z: -0.0022746923}
+--- !u!114 &4611991546972550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6167661134286402431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df26204c6f85b2b4cafa1b640362c753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawerPart: {fileID: 0}
+  openDistance: 0.1
+  openSpeed: 3
 --- !u!1 &6846043453103854682
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,9 +598,11 @@ GameObject:
   - component: {fileID: 7576736960852419941}
   - component: {fileID: 1965399784947431224}
   - component: {fileID: 5586714568590400679}
+  - component: {fileID: 9045902154655661153}
+  - component: {fileID: 7861698727025287397}
   m_Layer: 0
   m_Name: drawer3
-  m_TagString: Untagged
+  m_TagString: DeskDrawer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -581,3 +697,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 419930225715426294, guid: 4344adfc0cc82914ab854247eca00767, type: 3}
+--- !u!65 &9045902154655661153
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846043453103854682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.39, y: 0.034495283, z: 0.38}
+  m_Center: {x: -0.00000004842878, y: -0.000000013038516, z: -0.0022746923}
+--- !u!114 &7861698727025287397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846043453103854682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df26204c6f85b2b4cafa1b640362c753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawerPart: {fileID: 0}
+  openDistance: 0.1
+  openSpeed: 3

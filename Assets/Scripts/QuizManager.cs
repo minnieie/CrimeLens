@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 
 // This script manages a multimedia quiz system in Unity.
 // It supports both text-based and video-based questions, handles user input,
@@ -49,7 +50,7 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI questionText; // UI text for displaying question
     public TextMeshProUGUI scoreText; // UI text for displaying score
     public Button restartButton; // Button to restart the quiz
-    public Image questionUIImage; 
+    public Image questionUIImage; // UI image for displaying question image
 
     [Header("Scoring")]
     public int pointsPerCorrectAnswer = 10; // Points awarded per correct answer
@@ -91,6 +92,10 @@ public class QuizManager : MonoBehaviour
         if (videoPlayer != null)
         {
             videoPlayer.gameObject.SetActive(true);
+        }
+        else if (questionUIImage != null)
+        {
+            questionUIImage.gameObject.SetActive(true);
         }
 
         ShowQuestion(currentQuestionIndex); // Show first question
