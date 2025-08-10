@@ -76,9 +76,12 @@ public class LevelChanger : MonoBehaviour
             if (interactPrompt != null)
                 interactPrompt.gameObject.SetActive(true);
 
-            // Show room name temporarily
+            // Show room name permanently while player is in range
             if (roomNameText != null)
-                StartCoroutine(ShowRoomName());
+            {
+                roomNameText.text = roomName;
+                roomNameText.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -99,14 +102,5 @@ public class LevelChanger : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowRoomName()
-    {
-        // Display the room name for 3 seconds
-        roomNameText.text = roomName;
-        roomNameText.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(3f);
-
-        roomNameText.gameObject.SetActive(false);
-    }
+    // Removed ShowRoomName coroutine because it's no longer needed
 }

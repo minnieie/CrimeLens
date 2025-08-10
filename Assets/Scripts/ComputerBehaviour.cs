@@ -5,9 +5,10 @@ using System.Collections;
 
 // <summary>
 // This script handles player interaction with a computer terminal in a first-person game.
-// When the player enters the trigger zone, a UI prompt appears.
+// Interaction prompt and detection are controlled externally via raycast from PlayerBehaviour.
 // Pressing 'E' starts the interaction: switches camera, shows UI, disables player movement.
-// Exiting the trigger zone or ending interaction restores the player state.
+// Ending interaction restores the player state.
+// </summary>
 
 public class ComputerBehaviour : MonoBehaviour
 {
@@ -19,16 +20,17 @@ public class ComputerBehaviour : MonoBehaviour
     [Header("UI and Player")]
     public GameObject computerUI;                  // UI shown during interaction (e.g., quiz)
     public GameObject player;                      // Player GameObject
-    public GameObject interactionPrompt;           // UI prompt shown when player is in range
+    public GameObject interactionPrompt;          // UI prompt shown when player is aiming at computer
 
     [Header("Quiz System")]
     public QuizManager quizManager;                // Reference to quiz logic
 
     private bool isInteracting = false;            // Tracks if player is currently interacting
-    private bool playerInRange = false;            // Tracks if player is in trigger zone
 
     public bool IsInteracting => isInteracting;    // Public read-only access to interaction state
     public static ComputerBehaviour ActiveComputer = null; // Tracks currently active computer
+
+    // Removed playerInRange because detection is raycast based now
 
     void Start()
     {
@@ -47,41 +49,36 @@ public class ComputerBehaviour : MonoBehaviour
         isInteracting = false;
     }
 
-    void Update()
+    // Called by PlayerBehaviour when raycast detects the player is aiming at this computer
+    public void ShowInteractionPrompt()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            float distance = Vector3.Distance(player.transform.position, transform.position);
-            Debug.Log($"Distance to computer: {distance}");
-            if (distance <= 3f)  // or your interactionDistance
-            {
-                StartInteraction();
-            }
-            else
-            {
-                Debug.Log("Too far from computer to interact");
-            }
-        }
+        if (!isInteracting && interactionPrompt != null && !interactionPrompt.activeSelf)
+            interactionPrompt.SetActive(true);
     }
 
+    // Called by PlayerBehaviour when raycast no longer detects this computer
+    public void HideInteractionPrompt()
+    {
+        if (interactionPrompt != null && interactionPrompt.activeSelf)
+            interactionPrompt.SetActive(false);
+    }
 
     public void StartInteraction()
-    {   
-         // Hide interaction prompt just in case
+    {
+        if (isInteracting) return;
+
+        // Hide interaction prompt just in case
         if (interactionPrompt != null)
             interactionPrompt.SetActive(false);
 
-        playerInRange = false; // Prevent prompt from reappearing
+        ActiveComputer = this;
+        isInteracting = true;
 
         // Hide player renderers for immersion
         foreach (var renderer in player.GetComponentsInChildren<Renderer>())
         {
             renderer.enabled = false;
         }
-
-        if (isInteracting) return;
-        ActiveComputer = this;
-        isInteracting = true;
 
         Debug.Log("StartInteraction called on " + gameObject.name);
 
@@ -117,10 +114,11 @@ public class ComputerBehaviour : MonoBehaviour
 
     public void EndInteraction()
     {
-        // Re-enable player renderer
-        MeshRenderer playerRenderer = player.GetComponent<MeshRenderer>();
-        if (playerRenderer != null)
-            playerRenderer.enabled = true;
+        // Re-enable player renderers
+        foreach (var renderer in player.GetComponentsInChildren<Renderer>())
+        {
+            renderer.enabled = true;
+        }
 
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
@@ -148,34 +146,6 @@ public class ComputerBehaviour : MonoBehaviour
 
         // Delay before showing player renderers again
         StartCoroutine(ReenablePlayerRenderersAfterDelay(1.5f));
-    }
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-
-            // Only show prompt if not interacting
-            if (!isInteracting && interactionPrompt != null)
-                interactionPrompt.SetActive(true);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-
-            // Hide interaction prompt
-            if (interactionPrompt != null)
-                interactionPrompt.SetActive(false);
-
-            // End interaction if player walks away
-            if (isInteracting)
-                EndInteraction();
-        }
     }
 
     private IEnumerator ReenablePlayerRenderersAfterDelay(float delay)

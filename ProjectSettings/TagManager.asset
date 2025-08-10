@@ -11,6 +11,7 @@ TagManager:
   - Computer
   - NPC
   - Cabinet
+  - DeskDrawer
   layers:
   - Default
   - TransparentFX

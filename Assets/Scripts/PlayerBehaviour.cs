@@ -17,6 +17,7 @@ public class PlayerBehaviour : MonoBehaviour
     public AudioSource footstepAudio;
     public float moveThreshold = 0.1f;
     private Vector3 lastPosition;
+    private DeskDrawer currentDeskDrawer;
 
     // Configuration
     [SerializeField] Transform spawnPoint;
@@ -53,6 +54,8 @@ public class PlayerBehaviour : MonoBehaviour
         currentDoor = null;
         currentCabinet = null;
         npc = null;
+        currentDeskDrawer = null;
+
 
         // Perform raycast detection
         if (Camera.main != null)
@@ -61,13 +64,22 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 rayDirection = Camera.main.transform.forward;
 
             if (Physics.Raycast(rayOrigin, rayDirection, out var hitInfo, interactionDistance))
-            {
+            {   
+                Debug.DrawRay(rayOrigin, rayDirection * hitInfo.distance, Color.green);
                 HandleInteractionTarget(hitInfo.collider.gameObject);
             }
             else
             {
                 ClearLastCoinHighlight();
+                
+                // Clear computer reference if no computer hit
+                if (computer != null)
+                {
+                    computer = null;
+                    canInteract = false;
+                }
             }
+
         }
 
         // Get raw input values (not affected by smoothing)
@@ -109,6 +121,11 @@ public class PlayerBehaviour : MonoBehaviour
                 lastCoin = nearbyCoin;
             }
         }
+        else if (target.CompareTag("DeskDrawer"))
+        {
+            canInteract = true;
+            currentDeskDrawer = target.GetComponent<DeskDrawer>();
+        }
         else if (target.CompareTag("Door"))
         {
             canInteract = true;
@@ -133,7 +150,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
         else if (target.CompareTag("Cabinet"))
-        {   
+        {
             canInteract = true;
             currentCabinet = target.GetComponent<Cabinet>();
             // Debug.Log("Cabinet found - canInteract set to true");
@@ -155,37 +172,67 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnInteract()
     {
+        Debug.Log($"OnInteract called. ActiveComputer: {ComputerBehaviour.ActiveComputer?.gameObject.name}, CurrentComputer: {computer?.gameObject.name}");
+
+        // If currently interacting with a computer...
+        if (ComputerBehaviour.ActiveComputer != null)
+        {
+            // Only end interaction if the player is still aiming at the same computer
+            if (computer == ComputerBehaviour.ActiveComputer)
+            {
+                Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
+                ComputerBehaviour.ActiveComputer.EndInteraction();
+                computer = null; // Clear reference after quitting
+                return; // Return early so we don't start interaction again immediately
+            }
+            else
+            {
+                // Player is interacting with one computer, but aiming at another
+                // You can decide if you want to switch computers here or just ignore input
+                Debug.Log("Player is interacting with a different computer; ignoring interact.");
+                return;
+            }
+        }
+
+        // If not interacting and player is aiming at a computer, start interaction
+        if (computer != null)
+        {
+            if (!computer.IsInteracting)
+            {
+                Debug.Log($"Interacting with computer: {computer.gameObject.name}");
+                computer.StartInteraction();
+                return;
+            }
+        }
+
+        // Other interactions
         if (nearbyCoin != null)
         {
             nearbyCoin.Collect(this);
+            return;
         }
         else if (currentDoor != null)
         {
             currentDoor.OpenDoors();
+            return;
         }
         else if (npc != null)
         {
             Debug.Log("Dialogue interaction triggered.");
             NPCBehaviour.dialogueActive = true;
             npc.StartDialogue();
+            return;
         }
-        else if (currentCabinet != null)  
-        {   
+        else if (currentCabinet != null)
+        {
             Debug.Log("Interacting with Cabinet: " + currentCabinet.gameObject.name);
             currentCabinet.Interact();
+            return;
         }
-        else if (ComputerBehaviour.ActiveComputer != null)
+        else if (currentDeskDrawer != null)
         {
-            Debug.Log($"Quitting computer: {ComputerBehaviour.ActiveComputer.gameObject.name}");
-            ComputerBehaviour.ActiveComputer.EndInteraction();
-        }
-        else if (computer != null)
-        {
-            if (!computer.IsInteracting)
-            {
-                Debug.Log($"Interacting with computer: {computer.gameObject.name}");
-                computer.StartInteraction();
-            }
+            currentDeskDrawer.Interact();
+            return;
         }
     }
 
