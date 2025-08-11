@@ -233,6 +233,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45219636}
   m_CullTransparentMesh: 1
+--- !u!1 &137457988 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 87070227317107307, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}
+  m_PrefabInstance: {fileID: 1933199212}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &139216483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3106,6 +3111,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2552551574270200387, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}
+      propertyPath: numberOfNPCs
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2552551574270200387, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}
       propertyPath: strikeCooldownDuration
       value: 5
       objectReference: {fileID: 0}
@@ -3113,6 +3122,10 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -2552551574270200387, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}
+      propertyPath: 'npcPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 137457988}
     - target: {fileID: -2552551574270200387, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
@@ -3686,6 +3699,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2798673681657820705}
   interactionDistance: 3
   respawnPoint: {x: 0, y: 0, z: 0}
+  isUILocked: 0
 --- !u!114 &1989166327948534323
 MonoBehaviour:
   m_ObjectHideFlags: 0

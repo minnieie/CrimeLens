@@ -118,7 +118,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     void HandleInteractionTarget(GameObject target)
     {   
-        Debug.Log("Raycast hit: " + target.name);
+        // Debug.Log("Raycast hit: " + target.name);
 
         if (target.CompareTag("Collectible"))
         {

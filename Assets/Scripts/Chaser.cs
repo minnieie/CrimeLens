@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,7 +18,9 @@ public class Chaser : MonoBehaviour
     [SerializeField] private float hearingRadius = 5f;               // Radius to detect sounds
     [SerializeField] private float hearingAngle = 90f;               // Angle to detect sounds
     [SerializeField] private float strikeCooldownDuration = 2f;      // Cooldown before a new strike can be triggered
-
+    [SerializeField] private float alertRestTime = 5f;               // Time to wait before returning to normal state
+    private float alertTimer = 0f; // Timer to track alert state duration
+    private bool isAlert = false;
     private NavMeshAgent agent;        // Used to move the NPC around using Unity's pathfinding
     private Transform player;          // Reference to player
     private Vector3 lastHeardPosition; // Last position where sound was detected
@@ -38,7 +41,7 @@ public class Chaser : MonoBehaviour
     [SerializeField] private GameObject[] npcPrefabs; // Prefab to instantiate for backup
     [SerializeField] float spawnRadiusMin = 1f;
     [SerializeField] float spawnRadiusMax = 2f;
-    [SerializeField] private int numberOfNPCs = 2;
+    [SerializeField] private int numberOfNPCs = 1;
     [SerializeField] bool hasSpawned = false; 
     [SerializeField] float backupCooldown = 5f; // Cooldown for calling backup
     float lastBackupTime = -Mathf.Infinity;
@@ -64,36 +67,46 @@ public class Chaser : MonoBehaviour
         if (strikeCooldownTimer > 0f)
             strikeCooldownTimer -= Time.deltaTime;
 
-        // Hearing-based detection (only when not chasing)
-        if (currentState != AIState.Chase && strikeCooldownTimer <= 0f)
+        if (isAlert && player == null)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, hearingRadius);
-            foreach (Collider hit in hits)
+            alertTimer -= Time.deltaTime;
+            if (alertTimer <= 0f)
             {
-                if (hit.CompareTag("Player"))
+                isAlert = false;
+                Debug.Log("npc alert ended");
+            }
+        }
+
+        // Hearing-based detection (only when not chasing)
+            if (currentState != AIState.Chase && strikeCooldownTimer <= 0f)
+            {
+                Collider[] hits = Physics.OverlapSphere(transform.position, hearingRadius);
+                foreach (Collider hit in hits)
                 {
-                    Vector3 directionToPlayer = hit.transform.position - transform.position;
-                    float angle = Vector3.Angle(transform.forward, directionToPlayer);
-
-                    if (angle <= hearingAngle / 2f)
+                    if (hit.CompareTag("Player"))
                     {
-                        PlayerBehaviour pb = hit.GetComponent<PlayerBehaviour>();
-                        if (pb != null && pb.footstepAudio.isPlaying)
+                        Vector3 directionToPlayer = hit.transform.position - transform.position;
+                        float angle = Vector3.Angle(transform.forward, directionToPlayer);
+
+                        if (angle <= hearingAngle / 2f)
                         {
-                            player = hit.transform;
-                            lastHeardPosition = player.position;
+                            PlayerBehaviour pb = hit.GetComponent<PlayerBehaviour>();
+                            if (pb != null && pb.footstepAudio.isPlaying)
+                            {
+                                player = hit.transform;
+                                lastHeardPosition = player.position;
 
-                            Debug.Log($"NPC heard player! Distance: {directionToPlayer.magnitude:F2}, Angle: {angle:F2}");
+                                Debug.Log($"NPC heard player! Distance: {directionToPlayer.magnitude:F2}, Angle: {angle:F2}");
 
-                            RegisterStrike();                         // Register a detection
-                            SwitchState(AIState.Investigate);         // Switch to investigate state
-                            strikeCooldownTimer = strikeCooldownDuration; // Reset strike timer
-                            break;
+                                RegisterStrike();                         // Register a detection
+                                SwitchState(AIState.Investigate);         // Switch to investigate state
+                                strikeCooldownTimer = strikeCooldownDuration; // Reset strike timer
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
 
         // Strike reduction logic
         if (currentCooldown > 0f)
@@ -111,7 +124,6 @@ public class Chaser : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player = other.transform;
-            RegisterStrike();
             SwitchState(AIState.Chase);
         }
     }
@@ -323,7 +335,17 @@ public class Chaser : MonoBehaviour
                 PlayerBehaviour playerRespawn = player.GetComponent<PlayerBehaviour>();
                 if (playerRespawn != null)
                 {
-                    player.position = playerRespawn.respawnPoint; // Disable player interaction while captcha is active
+                    CharacterController cc = playerRespawn.GetComponent<CharacterController>();
+                    if (cc != null)
+                    {
+                        cc.enabled = false;
+                        player.position = playerRespawn.respawnPoint;
+                        cc.enabled = true;
+                    }
+                    else
+                    {
+                        player.position = playerRespawn.respawnPoint;
+                    }
                     Debug.Log("Player sent to respawn point");
                 }
             }
