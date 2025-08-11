@@ -28,6 +28,8 @@ public class ComputerBehaviour : MonoBehaviour
     private bool isInteracting = false;            // Tracks if player is currently interacting
 
     public bool IsInteracting => isInteracting;    // Public read-only access to interaction state
+    public bool isUSBOnly = false; // Indicates if this computer is only for USB interaction
+
     public static ComputerBehaviour ActiveComputer = null; // Tracks currently active computer
 
     // Removed playerInRange because detection is raycast based now

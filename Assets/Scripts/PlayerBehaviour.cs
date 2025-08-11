@@ -9,6 +9,7 @@ public class PlayerBehaviour : MonoBehaviour
     CoinBehaviour nearbyCoin;
     DoorBehaviour currentDoor;
     ComputerBehaviour computer;
+    USBBehaviour usb; 
     private Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
@@ -116,7 +117,9 @@ public class PlayerBehaviour : MonoBehaviour
     }
 
     void HandleInteractionTarget(GameObject target)
-    {
+    {   
+        Debug.Log("Raycast hit: " + target.name);
+
         if (target.CompareTag("Collectible"))
         {
             canInteract = true;
@@ -143,7 +146,7 @@ public class PlayerBehaviour : MonoBehaviour
             if (computer != null)
             {
                 canInteract = true;
-                Debug.Log($"Computer found - canInteract set to true");
+                // Debug.Log($"Computer found - canInteract set to true");
             }
         }
         else if (target.CompareTag("NPC"))
@@ -161,10 +164,27 @@ public class PlayerBehaviour : MonoBehaviour
             currentCabinet = target.GetComponent<Cabinet>();
             // Debug.Log("Cabinet found - canInteract set to true");
         }
+        else if (target.CompareTag("USB"))
+        {
+            if (usb == null)  // only assign if not holding USB already
+            {
+                usb = target.GetComponent<USBBehaviour>();
+                if (usb != null)
+                {
+                    canInteract = true;
+                    Debug.Log("USB found - canInteract set to true");
+                }
+            }
+        }
         else
         {
+            if (usb != null && !usb.isPickedUp)
+            {
+                usb = null;
+            }
             ClearLastCoinHighlight();
         }
+
     }
 
     void ClearLastCoinHighlight()
@@ -194,20 +214,54 @@ public class PlayerBehaviour : MonoBehaviour
             else
             {
                 // Player is interacting with one computer, but aiming at another
-                // You can decide if you want to switch computers here or just ignore input
                 Debug.Log("Player is interacting with a different computer; ignoring interact.");
                 return;
             }
         }
 
-        // If not interacting and player is aiming at a computer, start interaction
+        Debug.Log("USB reference: " + usb);
+        Debug.Log("USB picked up state: " + (usb != null ? usb.isPickedUp.ToString() : "null"));
+        
+        if (usb != null && !usb.isPickedUp)
+        {
+            Debug.Log("Attempting to pick up USB...");
+            usb.PickUpUSB();
+            return;
+        }
+
+
+        if (usb != null && usb.isPickedUp && computer != null && computer.isUSBOnly)
+        {
+            usb.playerCameraTransform = Camera.main.transform;  // <-- Assign camera here
+            bool inserted = usb.TryInsertIntoComputer();
+            if (inserted)
+            {
+                Debug.Log("USB inserted into USB-only computer.");
+            }
+            else
+            {
+                Debug.Log("Failed to insert USB (maybe too far?).");
+            }
+            return;
+        }
+
+
+        // If not interacting and player is aiming at a computer
         if (computer != null)
         {
-            if (!computer.IsInteracting)
+            if (computer.isUSBOnly)
             {
-                Debug.Log($"Interacting with computer: {computer.gameObject.name}");
-                computer.StartInteraction();
+                // USB insertion handled below, so just return here to skip normal interaction UI
                 return;
+            }
+            else
+            {
+                if (!computer.IsInteracting)
+                {
+                    Debug.Log($"Interacting with computer: {computer.gameObject.name}");
+                    computer.StartInteraction();
+                    return;
+                }
             }
         }
 

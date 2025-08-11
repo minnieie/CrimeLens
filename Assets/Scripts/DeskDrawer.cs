@@ -2,7 +2,6 @@
 // It allows the drawer to open and close smoothly when interacted with.
 // The drawer moves in the opposite direction of its forward vector, ensuring consistent behavior regardless of orientation.
 // Useful for interactive furniture in first-person or VR environments.
-
 using UnityEngine;
 
 public class DeskDrawer : MonoBehaviour
@@ -72,4 +71,7 @@ public class DeskDrawer : MonoBehaviour
         // Log the drawer's new state to the console
         Debug.Log("Desk drawer " + (isOpen ? "opened" : "closed"));
     }
+
+    // Public property to check if drawer is open
+    public bool IsOpen => isOpen;
 }
