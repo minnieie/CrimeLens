@@ -116,12 +116,6 @@ public class ComputerBehaviour : MonoBehaviour
 
     public void EndInteraction()
     {
-        // Re-enable player renderers
-        foreach (var renderer in player.GetComponentsInChildren<Renderer>())
-        {
-            renderer.enabled = true;
-        }
-
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
 
