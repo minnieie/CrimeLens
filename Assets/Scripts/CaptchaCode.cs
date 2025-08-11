@@ -62,28 +62,29 @@ public class CaptchaCode : MonoBehaviour
 
     public void ShowCaptchaUI()
     {
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor
-        Cursor.visible = true; // Make the cursor visible
+        // Cursor.lockState = CursorLockMode.None; // Unlock the cursor
+        // Cursor.visible = true; // Make the cursor visible
 
         if (captchaPanel != null)
         {
+            Debug.Log("Showing captcha UI");
             captchaPanel.SetActive(true); // Show the captcha panel
         }
         generatedCode = GenerateCode(codeLength); // Generate a new code
         codeText.text = generatedCode;
         inputField.text = ""; // Clear the input field
         feedbackText.text = ""; // Clear any previous feedback
-        playerBehaviour.isUILocked = true; // Disable player interaction while captcha is active
+        // playerBehaviour.isUILocked = true; // Disable player interaction while captcha is active
     }
 
     void HideCaptchaUI()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
-        Cursor.visible = false; // Hide the cursor
+        // Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
+        // Cursor.visible = false; // Hide the cursor
         if (captchaPanel != null)
         {
             captchaPanel.SetActive(false); // Hide the captcha panel
-            playerBehaviour.isUILocked = false; // Enable player interaction when captcha is hidden
+            // playerBehaviour.isUILocked = false; // Enable player interaction when captcha is hidden
         }
     }
 }

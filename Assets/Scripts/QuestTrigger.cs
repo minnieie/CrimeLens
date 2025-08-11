@@ -10,10 +10,10 @@ public class QuestTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (QuesTracker.Instance != null)
+            if (QuestTracker.Instance != null)
             {
                 Debug.Log("Quest Triggered: " + questTitle);
-                QuesTracker.Instance.SetQuest(questTitle, objectives);
+                QuestTracker.Instance.SetQuest(questTitle, objectives);
             }
         }
     }

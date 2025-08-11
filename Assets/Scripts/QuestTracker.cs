@@ -1,9 +1,9 @@
 using UnityEngine;
 using TMPro;
 
-public class QuesTracker : MonoBehaviour
+public class QuestTracker : MonoBehaviour
 {
-    public static QuesTracker Instance;  // Singleton instance
+    public static QuestTracker Instance;  // Singleton instance
 
     [Header("Optional: Assign in Inspector or leave empty to auto-find")]
     public TMP_Text questTitleTMP;
@@ -31,7 +31,7 @@ public class QuesTracker : MonoBehaviour
             questTitleTMP = GetComponentInChildren<TMP_Text>(true);
             if (questTitleTMP == null)
             {
-                Debug.LogWarning("[QuesTracker] Quest Title TMP text NOT found!");
+                Debug.LogWarning("[QuestTracker] Quest Title TMP text NOT found!");
             }
         }
 
@@ -51,11 +51,11 @@ public class QuesTracker : MonoBehaviour
 
             if (objectiveTMPs.Length == 0)
             {
-                Debug.LogWarning("[QuesTracker] No objective TMP texts found!");
+                Debug.LogWarning("[QuestTracker] No objective TMP texts found!");
             }
             else
             {
-                Debug.Log("[QuesTracker] Found " + objectiveTMPs.Length + " objective TMP texts automatically.");
+                Debug.Log("[QuestTracker] Found " + objectiveTMPs.Length + " objective TMP texts automatically.");
             }
         }
     }
@@ -64,16 +64,16 @@ public class QuesTracker : MonoBehaviour
     {
         if (questTitleTMP == null)
         {
-            Debug.LogError("[QuesTracker] Cannot set quest title because questTitleTMP is null.");
+            Debug.LogError("[QuestTracker] Cannot set quest title because questTitleTMP is null.");
             return;
         }
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)
         {
-            Debug.LogError("[QuesTracker] Cannot set objectives because objectiveTMPs array is empty.");
+            Debug.LogError("[QuestTracker] Cannot set objectives because objectiveTMPs array is empty.");
             return;
         }
 
-        Debug.Log("[QuesTracker] Setting quest: " + title);
+        Debug.Log("[QuestTracker] Setting quest: " + title);
 
         questTitleTMP.text = title;
         completedObjectives = new bool[objectives.Length];
@@ -95,7 +95,7 @@ public class QuesTracker : MonoBehaviour
     {
         if (completedObjectives == null || index < 0 || index >= completedObjectives.Length)
         {
-            Debug.LogWarning("[QuesTracker] Invalid objective index: " + index);
+            Debug.LogWarning("[QuestTracker] Invalid objective index: " + index);
             return;
         }
 
