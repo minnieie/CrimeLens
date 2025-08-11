@@ -69,9 +69,14 @@ public class ComputerBehaviour : MonoBehaviour
     {
         if (isInteracting) return;
 
+        if (GameManager.instance != null && GameManager.instance.questTrackerUI != null)
+        {
+            GameManager.instance.questTrackerUI.SetActive(false);
+        }
+
         // Hide interaction prompt just in case
-        if (interactionPrompt != null)
-            interactionPrompt.SetActive(false);
+            if (interactionPrompt != null)
+                interactionPrompt.SetActive(false);
 
         ActiveComputer = this;
         isInteracting = true;
@@ -118,6 +123,11 @@ public class ComputerBehaviour : MonoBehaviour
     {
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
+
+        if (GameManager.instance != null && GameManager.instance.questTrackerUI != null)
+        {
+            GameManager.instance.questTrackerUI.SetActive(true);
+        }
 
         // Switch back to player camera
         if (sharedZoomCam != null && playerCam != null)

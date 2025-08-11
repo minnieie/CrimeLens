@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public bool useReturnSpawn;
     public Vector3 returnSpawnPosition;
 
+    [Header("Quest Tracker")]
+    public GameObject questTrackerUI;
+
 
     void Awake()
     {

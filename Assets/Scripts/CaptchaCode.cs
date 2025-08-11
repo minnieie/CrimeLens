@@ -30,6 +30,7 @@ public class CaptchaCode : MonoBehaviour
         if (userInput == generatedCode)
         {
             feedbackText.text = "Correct!";
+            QuestTracker.Instance.CompleteObjective(1); // Assuming the first objective is the one to complete
             StartCoroutine(CloseAfterDelay()); // Hide the captcha UI after a delay on successful verification
         }
         else

@@ -6,7 +6,6 @@ public class QuestTracker : MonoBehaviour
     public static QuestTracker Instance;  // Singleton instance
 
     [Header("Optional: Assign in Inspector or leave empty to auto-find")]
-    public TMP_Text questTitleTMP;
     public TMP_Text[] objectiveTMPs;
 
     private bool[] completedObjectives;
@@ -25,29 +24,11 @@ public class QuestTracker : MonoBehaviour
             return;
         }
 
-        // Auto-find quest title TMP if not assigned
-        if (questTitleTMP == null)
-        {
-            questTitleTMP = GetComponentInChildren<TMP_Text>(true);
-            if (questTitleTMP == null)
-            {
-                Debug.LogWarning("[QuestTracker] Quest Title TMP text NOT found!");
-            }
-        }
-
         // Auto-find objective TMPs if not assigned or empty
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)
         {
             // Assuming objective TMPs are siblings or children named "Objective1", "Objective2", etc.
             objectiveTMPs = GetComponentsInChildren<TMP_Text>(true);
-
-            // Filter out the quest title text if it's in the same list
-            if (questTitleTMP != null)
-            {
-                var list = new System.Collections.Generic.List<TMP_Text>(objectiveTMPs);
-                list.Remove(questTitleTMP);
-                objectiveTMPs = list.ToArray();
-            }
 
             if (objectiveTMPs.Length == 0)
             {
@@ -60,22 +41,16 @@ public class QuestTracker : MonoBehaviour
         }
     }
 
-    public void SetQuest(string title, string[] objectives)
+    public void SetQuest(string[] objectives)
     {
-        if (questTitleTMP == null)
-        {
-            Debug.LogError("[QuestTracker] Cannot set quest title because questTitleTMP is null.");
-            return;
-        }
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)
         {
             Debug.LogError("[QuestTracker] Cannot set objectives because objectiveTMPs array is empty.");
             return;
         }
 
-        Debug.Log("[QuestTracker] Setting quest: " + title);
+        Debug.Log("[QuestTracker] Setting quest: ");
 
-        questTitleTMP.text = title;
         completedObjectives = new bool[objectives.Length];
 
         for (int i = 0; i < objectiveTMPs.Length; i++)
@@ -112,5 +87,15 @@ public class QuestTracker : MonoBehaviour
                 objectiveTMPs[index].text = "[X] " + currentText.Substring(4);
             }
         }
+    }
+
+    public void ShowTracker()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void HideTracker()
+    {
+        gameObject.SetActive(false);
     }
 }
