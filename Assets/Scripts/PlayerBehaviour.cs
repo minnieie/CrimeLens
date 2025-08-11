@@ -11,6 +11,7 @@ public class PlayerBehaviour : MonoBehaviour
     DoorBehaviour currentDoor;
     ComputerBehaviour computer;
     USBBehaviour usb; 
+    keypadBehaviour currentKeypad; // Reference to the keypad being interacted with
     private Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
@@ -63,6 +64,7 @@ public class PlayerBehaviour : MonoBehaviour
         currentCabinet = null;
         npc = null;
         currentDeskDrawer = null;
+        currentKeypad = null; // Reset keypad reference
 
 
         // Perform raycast detection
@@ -72,14 +74,14 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 rayDirection = Camera.main.transform.forward;
 
             if (Physics.Raycast(rayOrigin, rayDirection, out var hitInfo, interactionDistance))
-            {   
+            {
                 Debug.DrawRay(rayOrigin, rayDirection * hitInfo.distance, Color.green);
                 HandleInteractionTarget(hitInfo.collider.gameObject);
             }
             else
             {
                 ClearLastCoinHighlight();
-                
+
                 // Clear computer reference if no computer hit
                 if (computer != null)
                 {   
@@ -167,6 +169,11 @@ public class PlayerBehaviour : MonoBehaviour
             currentCabinet = target.GetComponent<Cabinet>();
             // Debug.Log("Cabinet found - canInteract set to true");
         }
+        else if (target.CompareTag("Keypad"))
+        {
+            canInteract = true;
+            currentKeypad = target.GetComponent<keypadBehaviour>();
+        }
         else if (target.CompareTag("USB"))
         {
             if (usb == null)  // only assign if not holding USB already
@@ -231,8 +238,6 @@ public class PlayerBehaviour : MonoBehaviour
             usb.PickUpUSB();
             return;
         }
-
-
         if (usb != null && usb.isPickedUp && computer != null && computer.isUSBOnly)
         {
             usb.playerCameraTransform = Camera.main.transform;  // <-- Assign camera here
@@ -284,6 +289,12 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Dialogue interaction triggered.");
             NPCBehaviour.dialogueActive = true;
             npc.StartDialogue();
+            return;
+        }
+        else if (currentKeypad != null)
+        {
+            Debug.Log("Interacting with Keypad: " + currentKeypad.gameObject.name);
+            currentKeypad.ShowKeypad();
             return;
         }
         else if (currentCabinet != null)

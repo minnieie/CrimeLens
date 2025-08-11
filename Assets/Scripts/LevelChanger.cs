@@ -22,6 +22,7 @@ public class LevelChanger : MonoBehaviour
 
     [Header("Spawn ID")]
     public string spawnID; // Identifier for the spawn point, used to determine where the player should start in the new scene
+    keypadBehaviour lockedDoor;
 
     void Start()
     {
@@ -71,6 +72,14 @@ public class LevelChanger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = true;
+
+            if (lockedDoor == true)
+            {
+                // Show locked door message
+                if (interactPrompt != null)
+                    interactPrompt.text = "The door is locked.";
+                enabled = false; // Disable this LevelChanger script while the door is locked
+            }
 
             // Show interaction prompt
             if (interactPrompt != null)
