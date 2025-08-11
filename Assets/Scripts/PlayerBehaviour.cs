@@ -81,7 +81,8 @@ public class PlayerBehaviour : MonoBehaviour
                 
                 // Clear computer reference if no computer hit
                 if (computer != null)
-                {
+                {   
+                    computer.HideInteractionPrompt();
                     computer = null;
                     canInteract = false;
                 }
@@ -146,6 +147,7 @@ public class PlayerBehaviour : MonoBehaviour
             if (computer != null)
             {
                 canInteract = true;
+                computer.ShowInteractionPrompt();
                 // Debug.Log($"Computer found - canInteract set to true");
             }
         }
