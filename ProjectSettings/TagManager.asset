@@ -12,6 +12,7 @@ TagManager:
   - NPC
   - Cabinet
   - DeskDrawer
+  - USB
   layers:
   - Default
   - TransparentFX
