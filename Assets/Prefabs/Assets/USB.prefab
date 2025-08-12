@@ -264,8 +264,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6629146f3d9f434aa4fd48dc21c80c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  downloadTime: 5
+  downloadTime: 30
   progressBar: {fileID: 0}
   progressText: {fileID: 0}
+  allowedComputerTransform: {fileID: 0}
+  insertDistance: 10
+  requiredDrawer: {fileID: 0}
   isPickedUp: 0
   isInserted: 0
+  playerCameraTransform: {fileID: 0}

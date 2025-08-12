@@ -1,18 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 /// <summary>
 /// This script handles the behavior of a USB object in a Unity game.
 /// It manages picking up the USB, inserting it into a specific computer,
-/// and simulating a download process with a progress bar and text.
+/// and simulating a download process with a progress bar.
 /// </summary>
 public class USBBehaviour : MonoBehaviour
 {
     [Header("USB Settings")]
-    public float downloadTime = 5f; // Time in seconds to complete the download from 0% to 100%
+    public float downloadTime = 30f; // Time in seconds to complete the download from 0% to 100%
     public Slider progressBar;      // Optional UI slider to show download progress
-    public TMP_Text progressText;   // Optional UI text to show percentage progress
 
     [Header("Insertion Settings")]
     public Transform allowedComputerTransform;  // Reference to the specific computer the USB can be inserted into
@@ -43,15 +41,6 @@ public class USBBehaviour : MonoBehaviour
             {
                 progressBar.value = Mathf.Clamp01(currentProgress);
             }
-
-            // Update UI text if assigned
-            if (progressText != null)
-            {
-                progressText.text = Mathf.RoundToInt(currentProgress * 100) + "%";
-            }
-
-            // Log current progress
-            Debug.Log($"Downloading... Progress: {currentProgress}");
 
             // Check if download is complete
             if (currentProgress >= 1f)
@@ -153,8 +142,6 @@ public class USBBehaviour : MonoBehaviour
         // Reset UI progress
         if (progressBar != null)
             progressBar.value = 0f;
-        if (progressText != null)
-            progressText.text = "0%";
 
         Debug.Log("USB inserted into computer. Starting download...");
     }
