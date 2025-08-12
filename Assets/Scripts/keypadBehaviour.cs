@@ -99,6 +99,8 @@ public class keypadBehaviour : MonoBehaviour
         // UnlockDoor();
         keypadPanel.SetActive(false);
         enteredCode = ""; // reset code
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor again
+        Cursor.visible = false; // Hide the cursor
     }
 
     private IEnumerator ShowErrorMessage()

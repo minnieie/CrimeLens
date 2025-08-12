@@ -77,6 +77,8 @@ public class MainMenuController : MonoBehaviour
     {
         PlayClickSound(); // Play feedback sound
         SceneManager.LoadScene(targetSceneIndex); // Load the target scene
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor again
+        Cursor.visible = false; // Hide the cursor
     }
 
     // Called when "Credits" button is pressed
