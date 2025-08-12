@@ -4,7 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    int score = 0;
+    public int score = 0;
 
     [SerializeField]
     TextMeshProUGUI scoreText;
