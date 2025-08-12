@@ -13,7 +13,7 @@ public class PlayerBehaviour : MonoBehaviour
     USBBehaviour usb; 
     keypadBehaviour currentKeypad; // Reference to the keypad being interacted with
     endingCutscene endingCutscene; // Reference to the ending cutscene
-    private Cabinet currentCabinet;
+    public Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
 
