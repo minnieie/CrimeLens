@@ -15,14 +15,6 @@ public class CaptchaCode : MonoBehaviour
     [SerializeField] float closeDelay = 2f; // Delay before closing the captcha UI after successful verification
     string generatedCode;
 
-    void Start()
-    {
-        if (captchaPanel != null)
-        {
-            captchaPanel.SetActive(false); // Hide the captcha panel at the start
-        }
-    }
-
     public void VerifyCode()
     {
         string userInput = inputField.text.ToUpper();
