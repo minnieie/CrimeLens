@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using StarterAssets;
+using UnityEditor.Rendering.Universal;
 
 public class Cabinet : MonoBehaviour
 {
@@ -10,15 +11,17 @@ public class Cabinet : MonoBehaviour
     [SerializeField] Vector3 doorAOpenEuler = new Vector3(0f, -90f, 0f);
     [SerializeField] Vector3 doorBOpenEuler = new Vector3(0f, 90f, 0f);
 
-    // [Header("Player & Hide Point")]
-    // [SerializeField] GameObject player;
-    // [SerializeField] Camera playerCamera;
-    // [SerializeField] Transform hidePoint;
-    // [SerializeField] Transform hideAnchor;
+    [Header("Kick Player Out")]
+    [SerializeField] GameObject player;
+    [SerializeField] float autoExitDelay = 7f; // Time before auto exit if player is hidden
 
     [Header("Timings (seconds)")]
     [SerializeField] float doorOpenDuration = 1f;
     [SerializeField] float doorCloseDuration = 1f;
+
+    [Header("Exit Settings")]
+    [SerializeField] Transform exitPoint;
+
 
     Vector3 doorAClosedEuler;
     Vector3 doorBClosedEuler;
@@ -28,8 +31,8 @@ public class Cabinet : MonoBehaviour
     bool isAnimating = false;
     public bool isPlayerHidden = false;
 
-    // Vector3 storedPosition;
-    // Quaternion storedRotation;
+    Vector3 storedPosition;
+    Quaternion storedRotation;
 
     void Start()
     {
@@ -37,6 +40,11 @@ public class Cabinet : MonoBehaviour
         doorBClosedEuler = doorB.localEulerAngles;
         doorAOpenEulerWorld = doorAClosedEuler + doorAOpenEuler;
         doorBOpenEulerWorld = doorBClosedEuler + doorBOpenEuler;
+
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
     public void Interact()
@@ -59,35 +67,9 @@ public class Cabinet : MonoBehaviour
         yield return new WaitForSeconds(doorOpenDuration);
 
         // 2. Store and move player
-        // storedPosition = player.transform.position;
-        // storedRotation = player.transform.rotation;
-
-        // var controller = player.GetComponent<FirstPersonController>();
-        // var cc = player.GetComponent<CharacterController>();
-        // var rb = player.GetComponent<Rigidbody>();
-
-        // if (controller != null) controller.enabled = false;
-        // if (cc != null) cc.enabled = false;
-        // if (rb != null)
-        // {
-        //     rb.isKinematic = true;
-        // }
-
-        // Debug.Log("Player position before hiding: " + storedPosition);
-        // Debug.Log("Hide anchor position: " + hideAnchor.position);
-
-        // if (rb != null)
-        // {
-        //     rb.MovePosition(hideAnchor.position);
-        //     rb.MoveRotation(hidePoint.rotation * Quaternion.Euler(0f, -90f, 0f));
-        // }
-        // else
-        // {
-        //     player.transform.position = hideAnchor.position;
-        //     player.transform.rotation = hidePoint.rotation * Quaternion.Euler(0f, -90f, 0f);
-        // }
-
-        // Debug.LogWarning("Player position after hiding: " + player.transform.position);
+        storedPosition = player.transform.position;
+        storedRotation = player.transform.rotation;
+        Debug.Log("player position before hiding: " + storedPosition);
 
         isPlayerHidden = true;
 
@@ -96,58 +78,48 @@ public class Cabinet : MonoBehaviour
         doorB.localRotation = Quaternion.Euler(doorBClosedEuler);
         yield return new WaitForSeconds(doorCloseDuration);
 
-        // 4. Re-enable movement
-        // if (controller != null) controller.enabled = true;
-        // if (cc != null) cc.enabled = true;
-        // if (rb != null) rb.isKinematic = false;
-
         isAnimating = false;
+        StartCoroutine(AutoExitCabinetTimer());
     }
 
     IEnumerator ExitCabinetRoutine()
+{
+    isAnimating = true;
+
+    // 1. Open doors
+    doorA.localRotation = Quaternion.Euler(doorAOpenEulerWorld);
+    doorB.localRotation = Quaternion.Euler(doorBOpenEulerWorld);
+    yield return new WaitForSeconds(doorOpenDuration);
+
+    // 2. Calculate exit position & rotation
+    if (exitPoint != null)
     {
-        isAnimating = true;
+        player.transform.position = exitPoint.position;
+        player.transform.rotation = exitPoint.rotation;
+    }
+    else
+    {
+        Debug.LogWarning("ExitPoint not assigned on Cabinet!");
+    }
 
-        // 1. Open doors
-        doorA.localRotation = Quaternion.Euler(doorAOpenEulerWorld);
-        doorB.localRotation = Quaternion.Euler(doorBOpenEulerWorld);
-        yield return new WaitForSeconds(doorOpenDuration);
 
-        // 2. Move player to the Stored position
-        // var controller = player.GetComponent<FirstPersonController>();
-        // var cc = player.GetComponent<CharacterController>();
-        // var rb = player.GetComponent<Rigidbody>();
+    isPlayerHidden = false;
 
-        // if (controller != null) controller.enabled = false;
-        // if (cc != null) cc.enabled = false;
-        // if (rb != null)
-        // {
-        //     rb.isKinematic = true;
-        // }
+    // 3. Close doors
+    doorA.localRotation = Quaternion.Euler(doorAClosedEuler);
+    doorB.localRotation = Quaternion.Euler(doorBClosedEuler);
+    yield return new WaitForSeconds(doorCloseDuration);
 
-        // if (rb != null)
-        // {
-        //     rb.MovePosition(storedPosition);
-        //     rb.MoveRotation(storedRotation);
-        // }
-        // else
-        // {
-        //     player.transform.position = storedPosition;
-        //     player.transform.rotation = storedRotation;
-        // }
+    isAnimating = false;
+}
 
-        isPlayerHidden = false;
 
-        // 3. Close doors
-        doorA.localRotation = Quaternion.Euler(doorAClosedEuler);
-        doorB.localRotation = Quaternion.Euler(doorBClosedEuler);
-        yield return new WaitForSeconds(doorCloseDuration);
-
-        // 4. Re-enable movement
-        // if (controller != null) controller.enabled = true;
-        // if (cc != null) cc.enabled = true;
-        // if (rb != null) rb.isKinematic = false;
-
-        isAnimating = false;
+    private IEnumerator AutoExitCabinetTimer()
+    {
+        yield return new WaitForSeconds(autoExitDelay);
+        if (isPlayerHidden)
+        {
+            StartCoroutine(ExitCabinetRoutine());
+        }
     }
 }
