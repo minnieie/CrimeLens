@@ -63,19 +63,23 @@ public class CaptchaCode : MonoBehaviour
 
     public void ShowCaptchaUI()
     {
-        // Cursor.lockState = CursorLockMode.None; // Unlock the cursor
-        // Cursor.visible = true; // Make the cursor visible
+        StartCoroutine(ShowCaptchaUIDelayed());
+    }
 
-        if (captchaPanel != null)
-        {
-            Debug.Log("Showing captcha UI");
-            captchaPanel.SetActive(true); // Show the captcha panel
-        }
-        generatedCode = GenerateCode(codeLength); // Generate a new code
+    private IEnumerator ShowCaptchaUIDelayed()
+    {
+        // Ensure parent UI is active before showing captcha
+        if (captchaPanel.transform.parent != null)
+            captchaPanel.transform.parent.gameObject.SetActive(true);
+
+        yield return null; // Wait 1 frame
+
+        generatedCode = GenerateCode(codeLength);
         codeText.text = generatedCode;
-        inputField.text = ""; // Clear the input field
-        feedbackText.text = ""; // Clear any previous feedback
-        // playerBehaviour.isUILocked = true; // Disable player interaction while captcha is active
+        inputField.text = "";
+        feedbackText.text = "";
+
+        captchaPanel.SetActive(true);
     }
 
     void HideCaptchaUI()
