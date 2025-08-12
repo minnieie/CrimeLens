@@ -22,7 +22,9 @@ public class LevelChanger : MonoBehaviour
 
     [Header("Spawn ID")]
     public string spawnID; // Identifier for the spawn point, used to determine where the player should start in the new scene
-    keypadBehaviour lockedDoor;
+    
+    [Header("Door Lock Reference")]
+    public keypadBehaviour lockedDoor; // Reference to keypad script that controls the lock state
 
     void Start()
     {
@@ -32,10 +34,18 @@ public class LevelChanger : MonoBehaviour
 
         if (roomNameText != null)
             roomNameText.gameObject.SetActive(false);
+
+        // Try to auto-find keypadBehaviour if not assigned
+        if (lockedDoor == null)
+            lockedDoor = GetComponent<keypadBehaviour>();
     }
 
     void Update()
     {
+        // If door is locked, skip scene changing entirely
+        if (lockedDoor != null && lockedDoor.lockedDoor)
+            return;
+
         // Get current and target scene names once per frame
         string currentScene = SceneManager.GetActiveScene().name;
         string nextScene = SceneManager.GetSceneByBuildIndex(targetSceneIndex).name;
@@ -65,7 +75,6 @@ public class LevelChanger : MonoBehaviour
         }
     }
 
-
     void OnTriggerEnter(Collider other)
     {
         // When the player enters the trigger zone
@@ -73,15 +82,19 @@ public class LevelChanger : MonoBehaviour
         {
             isPlayerInRange = true;
 
-            if (lockedDoor == true)
+            // Show locked door message if locked
+            if (lockedDoor != null && lockedDoor.lockedDoor)
             {
-                // Show locked door message
                 if (interactPrompt != null)
                     interactPrompt.text = "The door is locked.";
-                enabled = false; // Disable this LevelChanger script while the door is locked
+            }
+            else
+            {
+                // Show interaction prompt
+                if (interactPrompt != null)
+                    interactPrompt.text = "Press E to enter";
             }
 
-            // Show interaction prompt
             if (interactPrompt != null)
                 interactPrompt.gameObject.SetActive(true);
 

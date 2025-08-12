@@ -35,6 +35,7 @@ public class keypadBehaviour : MonoBehaviour
             // Optionally, enable player movement script here
         }
     }
+
     // Call this when player interacts with keypad (e.g., OnTriggerEnter or button press)
     public void ShowKeypad()
     {
@@ -43,9 +44,9 @@ public class keypadBehaviour : MonoBehaviour
         {
             if (i < keypadButtons.Count)
             {
-                // keypadButtons[i].gameObject.SetActive(true);
                 keypadButtons[i].interactable = true; // Ensure button is interactable
                 int buttonIndex = i; // Capture index for closure
+                keypadButtons[i].onClick.RemoveAllListeners(); // 🔧 FIX: Remove previous listeners
                 keypadButtons[i].onClick.AddListener(() => PressNumber(buttonIndex)); // Add new listener
             }
         }
@@ -55,10 +56,8 @@ public class keypadBehaviour : MonoBehaviour
         LockPlayerScreen(true); // Lock the player screen when keypad is shown
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true; // Show the cursor
-
-
     }
-    
+
     // Call this from each number button (pass the number as string)
     public void PressNumber(int number)
     {
