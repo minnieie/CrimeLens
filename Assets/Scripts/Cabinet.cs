@@ -26,10 +26,10 @@ public class Cabinet : MonoBehaviour
     Vector3 doorBOpenEulerWorld;
 
     bool isAnimating = false;
-    bool isPlayerHidden = false;
+    public bool isPlayerHidden = false;
 
-    Vector3 storedPosition;
-    Quaternion storedRotation;
+    // Vector3 storedPosition;
+    // Quaternion storedRotation;
 
     void Start()
     {

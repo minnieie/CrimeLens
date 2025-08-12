@@ -32810,6 +32810,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 171264564}
+    - target: {fileID: 3821426283942725204, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
+      propertyPath: m_VersionIndex
+      value: 289
+      objectReference: {fileID: 0}
     - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
       propertyPath: interactPrompt
       value: 

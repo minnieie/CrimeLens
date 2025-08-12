@@ -115,10 +115,11 @@ MonoBehaviour:
   hearingRadius: 5
   hearingAngle: 90
   strikeCooldownDuration: 2
+  alertRestTime: 5
   npcPrefabs:
   - {fileID: 87070227317107307}
   spawnRadiusMin: 1
-  spawnRadiusMax: 2
+  spawnRadiusMax: 1
   numberOfNPCs: 2
   hasSpawned: 0
   backupCooldown: 5
@@ -163,8 +164,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &214902708247293960
 GameObject:
   m_ObjectHideFlags: 0

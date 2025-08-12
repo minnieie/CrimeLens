@@ -12,7 +12,7 @@ public class PlayerBehaviour : MonoBehaviour
     ComputerBehaviour computer;
     USBBehaviour usb; 
     keypadBehaviour currentKeypad; // Reference to the keypad being interacted with
-    private Cabinet currentCabinet;
+    public Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
 

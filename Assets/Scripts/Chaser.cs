@@ -224,10 +224,16 @@ public class Chaser : MonoBehaviour
 
     // Coroutine for Chase state behavior
     IEnumerator Chase()
-    {   
+    {
+
+        Vector3 lastPosition = transform.position;
+        // float stuckTimer = 0f;
+        // float stuckThreshold = 0.5f; // Time to consider as stuck
+        // float stuckTimeLimit = 5f;
+
         // Keep looping while in Chase state
         while (currentState == AIState.Chase)
-        {   
+        {
             // If player lost (left trigger), switch to Idle state
             if (player == null)
             {
@@ -240,6 +246,17 @@ public class Chaser : MonoBehaviour
             if (dist > hearingRadius + 5f)
             {
                 Debug.Log($"Player too far ({dist:F2}). Stopping chase.");
+                player = null;
+                SwitchState(AIState.Idle);
+                yield break;
+            }
+
+            // Check if the chaser remains in the same spot
+
+            PlayerBehaviour pb = player.GetComponent<PlayerBehaviour>();
+            if (pb != null && pb.currentCabinet != null && pb.currentCabinet.isPlayerHidden)
+            {
+                Debug.Log("Player is hiding in cabinet. Chaser gives up.");
                 player = null;
                 SwitchState(AIState.Idle);
                 yield break;
