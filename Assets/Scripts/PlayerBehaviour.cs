@@ -12,7 +12,8 @@ public class PlayerBehaviour : MonoBehaviour
     ComputerBehaviour computer;
     USBBehaviour usb; 
     keypadBehaviour currentKeypad; // Reference to the keypad being interacted with
-    public Cabinet currentCabinet;
+    endingCutscene endingCutscene; // Reference to the ending cutscene
+    private Cabinet currentCabinet;
     NPCBehaviour npc;
     private CoinBehaviour lastCoin = null;
 
@@ -174,6 +175,11 @@ public class PlayerBehaviour : MonoBehaviour
             canInteract = true;
             currentKeypad = target.GetComponent<keypadBehaviour>();
         }
+        else if (target.CompareTag("Ending"))
+        {
+            canInteract = true;
+            endingCutscene = target.GetComponent<endingCutscene>();
+        }
         else if (target.CompareTag("USB"))
         {
             if (usb == null)  // only assign if not holding USB already
@@ -295,6 +301,12 @@ public class PlayerBehaviour : MonoBehaviour
         {
             Debug.Log("Interacting with Keypad: " + currentKeypad.gameObject.name);
             currentKeypad.ShowKeypad();
+            return;
+        }
+        else if (endingCutscene != null)
+        {
+            Debug.Log("Interacting with Ending Cutscene: " + endingCutscene.gameObject.name);
+            endingCutscene.StartCutscene();
             return;
         }
         else if (currentCabinet != null)
