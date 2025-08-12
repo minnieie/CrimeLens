@@ -15,6 +15,8 @@ public class PlayerBehaviour : MonoBehaviour
     endingCutscene endingCutscene; // Reference to the ending cutscene
     public Cabinet currentCabinet;
     NPCBehaviour npc;
+    private GameObject nearbyNPC;
+
     private CoinBehaviour lastCoin = null;
 
     // Movement variables
@@ -290,13 +292,28 @@ public class PlayerBehaviour : MonoBehaviour
             currentDoor.OpenDoors();
             return;
         }
-        else if (npc != null)
+        else if (nearbyNPC != null)
         {
             Debug.Log("Dialogue interaction triggered.");
-            NPCBehaviour.dialogueActive = true;
-            npc.StartDialogue();
-            return;
+
+            // Try NPCOptions first
+            NPCOptions optionsNPC = nearbyNPC.GetComponent<NPCOptions>();
+            if (optionsNPC != null)
+            {
+                optionsNPC.StartDialogue();
+                return;
+            }
+
+            // Fallback to NPCBehaviour
+            NPCBehaviour basicNPC = nearbyNPC.GetComponent<NPCBehaviour>();
+            if (basicNPC != null)
+            {
+                NPCBehaviour.dialogueActive = true;
+                basicNPC.StartDialogue();
+                return;
+            }
         }
+
         else if (currentKeypad != null)
         {
             Debug.Log("Interacting with Keypad: " + currentKeypad.gameObject.name);
@@ -329,6 +346,18 @@ public class PlayerBehaviour : MonoBehaviour
         if (levelChanger != null)
         {
             return;
+        }
+        if (other.CompareTag("NPC"))
+        {
+            nearbyNPC = other.gameObject;
+        }
+    }
+    
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("NPC"))
+        {
+            nearbyNPC = null;
         }
     }
 
