@@ -46,7 +46,7 @@ public class keypadBehaviour : MonoBehaviour
             {
                 keypadButtons[i].interactable = true; // Ensure button is interactable
                 int buttonIndex = i; // Capture index for closure
-                keypadButtons[i].onClick.RemoveAllListeners(); // 🔧 FIX: Remove previous listeners
+                keypadButtons[i].onClick.RemoveAllListeners(); // Clear previous listeners
                 keypadButtons[i].onClick.AddListener(() => PressNumber(buttonIndex)); // Add new listener
             }
         }
