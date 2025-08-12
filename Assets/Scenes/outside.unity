@@ -51108,6 +51108,7 @@ MonoBehaviour:
   returnSpawnID: 
   useReturnSpawn: 0
   returnSpawnPosition: {x: 0, y: 0, z: 0}
+  questTrackerUI: {fileID: 0}
 --- !u!4 &1224428155
 Transform:
   m_ObjectHideFlags: 0
