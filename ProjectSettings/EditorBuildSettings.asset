@@ -38,6 +38,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Seperate rooms/SpfRoom.unity
     guid: ac8056b11c28ee64799e2a3afd0c62d1
+  - enabled: 1
+    path: Assets/Scenes/outside.unity
+    guid: 2cc507dc093e1284f9f3f234dc7eb915
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

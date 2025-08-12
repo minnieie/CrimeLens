@@ -41,6 +41,7 @@ public class QuestTracker : MonoBehaviour
         }
     }
 
+    // Method to set the current quest objectives
     public void SetQuest(string[] objectives)
     {
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)

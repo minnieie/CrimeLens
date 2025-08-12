@@ -14664,8 +14664,8 @@ MonoBehaviour:
   dialogueText: {fileID: 202592426}
   nameText: {fileID: 202592425}
   wordDelay: 0.3
-  audioSource: {fileID: 865917680}
   talkingClip: {fileID: 8300000, guid: 5791a602019fa394180ac846978c126b, type: 3}
+  audioSource: {fileID: 865917680}
   interactPrompt: {fileID: 202592424}
 --- !u!136 &865917682
 CapsuleCollider:
@@ -21624,8 +21624,8 @@ MonoBehaviour:
   dialogueText: {fileID: 202592426}
   nameText: {fileID: 202592425}
   wordDelay: 0.3
-  audioSource: {fileID: 1195524439}
   talkingClip: {fileID: 8300000, guid: 5791a602019fa394180ac846978c126b, type: 3}
+  audioSource: {fileID: 1195524439}
   interactPrompt: {fileID: 202592424}
 --- !u!136 &1195524441
 CapsuleCollider:
@@ -33515,8 +33515,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectives:
-  - 
-  - 
+  - Interact with computer
+  - Solve the Deefake puzzle
 --- !u!4 &1967079344
 Transform:
   m_ObjectHideFlags: 0

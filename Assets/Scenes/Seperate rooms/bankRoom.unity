@@ -1189,9 +1189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectives:
-  - 'Complete the Activity
-
-'
+  - Solve the CAPTCHA on the computer
 --- !u!1001 &62615022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24499,8 +24497,8 @@ MonoBehaviour:
   dialogueText: {fileID: 1638527445}
   nameText: {fileID: 1638527444}
   wordDelay: 0.3
-  audioSource: {fileID: 1768154837}
   talkingClip: {fileID: 8300000, guid: 5791a602019fa394180ac846978c126b, type: 3}
+  audioSource: {fileID: 1768154837}
   interactPrompt: {fileID: 1638527443}
 --- !u!136 &1768154839
 CapsuleCollider:

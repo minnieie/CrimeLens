@@ -75,8 +75,8 @@ public class ComputerBehaviour : MonoBehaviour
         }
 
         // Hide interaction prompt just in case
-            if (interactionPrompt != null)
-                interactionPrompt.SetActive(false);
+        if (interactionPrompt != null)
+            interactionPrompt.SetActive(false);
 
         ActiveComputer = this;
         isInteracting = true;
@@ -117,6 +117,8 @@ public class ComputerBehaviour : MonoBehaviour
         // Disable player movement
         if (player != null)
             player.GetComponent<FirstPersonController>().enabled = false;
+            
+        QuestTracker.Instance.CompleteObjective(0);
     }
 
     public void EndInteraction()

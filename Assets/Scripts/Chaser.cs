@@ -225,12 +225,6 @@ public class Chaser : MonoBehaviour
     // Coroutine for Chase state behavior
     IEnumerator Chase()
     {
-
-        Vector3 lastPosition = transform.position;
-        // float stuckTimer = 0f;
-        // float stuckThreshold = 0.5f; // Time to consider as stuck
-        // float stuckTimeLimit = 5f;
-
         // Keep looping while in Chase state
         while (currentState == AIState.Chase)
         {
@@ -307,6 +301,7 @@ public class Chaser : MonoBehaviour
 
     IEnumerator CallForBackup()
     {
+        // Prevent calling backup too frequently
         if (Time.time - lastBackupTime < backupCooldown)
         {
             SwitchState(AIState.Idle);
@@ -318,14 +313,17 @@ public class Chaser : MonoBehaviour
         hasSpawned = true;
         for (int i = 0; i < numberOfNPCs; i++)
         {
+            // Randomised spawn position
             Vector3 randomOffset = Random.insideUnitSphere;
             randomOffset.y = 0; // Keep spawn position on the ground
             randomOffset = randomOffset.normalized * Random.Range(spawnRadiusMin, spawnRadiusMax);
             Vector3 spawnPosition = transform.position + randomOffset;
 
+            // Choose a random NPC prefab
             int prefabIndex = Random.Range(0, npcPrefabs.Length);
             GameObject chosenPrefab = npcPrefabs[prefabIndex];
 
+            // Spawn the chosen NPC prefab
             Instantiate(chosenPrefab, spawnPosition, Quaternion.identity);
             Debug.Log("Backup NPC spawned at: " + spawnPosition);
         }
@@ -341,6 +339,7 @@ public class Chaser : MonoBehaviour
         currentStrikes++;
         Debug.Log($"Strike {currentStrikes}/{maxStrikes} registered.");
 
+        // Check if max strikes reached
         if (currentStrikes >= maxStrikes)
         {
             Debug.Log("Max strikes reached. Calling for backup!");
@@ -352,11 +351,12 @@ public class Chaser : MonoBehaviour
                 PlayerBehaviour playerRespawn = player.GetComponent<PlayerBehaviour>();
                 if (playerRespawn != null)
                 {
+                    // Disable character controller during respawn
                     CharacterController cc = playerRespawn.GetComponent<CharacterController>();
                     if (cc != null)
                     {
                         cc.enabled = false;
-                        player.position = playerRespawn.respawnPoint;
+                        player.position = playerRespawn.respawnPoint; // Teleport player to the set respawn point
                         cc.enabled = true;
                     }
                     else
