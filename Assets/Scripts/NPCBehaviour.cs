@@ -28,6 +28,7 @@ public class NPCBehaviour : MonoBehaviour
     {
         if (dialogueActive && dialogueLines.Length > 0)
         {
+            GameManager.instance.questTrackerUI.SetActive(false);
             nameText.text = gameObject.name; // Set the NPC name
             dialogueText.text = "";
             // Activate the dialogue UI
@@ -93,6 +94,8 @@ public class NPCBehaviour : MonoBehaviour
         }
 
         Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
+        GameManager.instance.questTrackerUI.SetActive(false);
+        QuestTracker.Instance.CompleteObjective(1);
     }
 
     // Show interaction prompt when player is nearby

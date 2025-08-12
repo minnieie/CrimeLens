@@ -244,6 +244,7 @@ public class QuizManager : MonoBehaviour
 
         // Show final score
         scoreText.text = $"You answered {correctAnswersCount} out of {questions.Count} questions correctly!";
+        QuestTracker.Instance.CompleteObjective(1);
     }
 
     // Restarts the quiz

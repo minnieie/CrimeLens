@@ -1189,8 +1189,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectives:
-  - Talk to the NPC
-  - Complete the activity
+  - 'Complete the Activity
+
+'
 --- !u!1001 &62615022
 PrefabInstance:
   m_ObjectHideFlags: 0

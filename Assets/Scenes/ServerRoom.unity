@@ -2556,8 +2556,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectives:
-  - 
-  - 
+  - Retrieve the data
+  - Escape the building
 --- !u!1001 &326457632
 PrefabInstance:
   m_ObjectHideFlags: 0
