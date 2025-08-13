@@ -14,7 +14,8 @@ public class PlayerBehaviour : MonoBehaviour
     keypadBehaviour currentKeypad; // Reference to the keypad being interacted with
     endingCutscene endingCutscene; // Reference to the ending cutscene
     public Cabinet currentCabinet;
-    NPCBehaviour npc;
+    NPCBehaviour basicNPC;
+    NPCOptions optionsNPC;
     private GameObject nearbyNPC;
 
     private CoinBehaviour lastCoin = null;
@@ -65,7 +66,8 @@ public class PlayerBehaviour : MonoBehaviour
         nearbyCoin = null;
         currentDoor = null;
         currentCabinet = null;
-        npc = null;
+        basicNPC = null;
+        optionsNPC = null;
         currentDeskDrawer = null;
         currentKeypad = null; // Reset keypad reference
 
@@ -159,8 +161,9 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else if (target.CompareTag("NPC"))
         {
-            npc = target.GetComponent<NPCBehaviour>();
-            if (npc != null)
+            optionsNPC = target.GetComponent<NPCOptions>();
+            basicNPC = target.GetComponent<NPCBehaviour>();
+            if (basicNPC != null || optionsNPC != null)
             {
                 canInteract = true;
                 Debug.Log("NPC found - canInteract set to true");
@@ -297,7 +300,7 @@ public class PlayerBehaviour : MonoBehaviour
             Debug.Log("Dialogue interaction triggered.");
 
             // Try NPCOptions first
-            NPCOptions optionsNPC = nearbyNPC.GetComponent<NPCOptions>();
+            optionsNPC = nearbyNPC.GetComponent<NPCOptions>();
             if (optionsNPC != null)
             {
                 optionsNPC.StartDialogue();
@@ -305,7 +308,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             // Fallback to NPCBehaviour
-            NPCBehaviour basicNPC = nearbyNPC.GetComponent<NPCBehaviour>();
+            basicNPC = nearbyNPC.GetComponent<NPCBehaviour>();
             if (basicNPC != null)
             {
                 NPCBehaviour.dialogueActive = true;

@@ -17,6 +17,7 @@ public class NPCOptions : MonoBehaviour
     public TextMeshProUGUI nameText;
     public GameObject dialoguePanel;
     public GameObject optionsPanel;
+    public TextMeshProUGUI interactPrompt;
 
     /// <summary>
     /// List of buttons used to display dialogue options.
@@ -69,6 +70,7 @@ public class NPCOptions : MonoBehaviour
     /// Tracks the current position in the dialogue tree.
     /// </summary>
     private int currentNodeIndex = 0;
+    public static NPCOptions ActiveNPC = null;
 
     private void Awake()
     {
@@ -100,6 +102,10 @@ public class NPCOptions : MonoBehaviour
         // Show cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        ActiveNPC = this;
+        GameManager.instance.questTrackerUI.SetActive(false);
+        interactPrompt.gameObject.SetActive(false); // Hide interaction prompt
     }
 
     /// <summary>
@@ -198,6 +204,8 @@ public class NPCOptions : MonoBehaviour
     /// </summary>
     public void EndDialogue()
     {
+        GameManager.instance.questTrackerUI.SetActive(true);
+        interactPrompt.gameObject.SetActive(true);
         dialoguePanel.SetActive(false);
         optionsPanel.SetActive(false);
         dialogueText.text = "";
@@ -205,5 +213,22 @@ public class NPCOptions : MonoBehaviour
         // Hide cursor again
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    // Show interaction prompt when player is nearby
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && interactPrompt != null)
+        {
+            interactPrompt.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && interactPrompt != null)
+        {
+            interactPrompt.gameObject.SetActive(false);
+        }
     }
 }

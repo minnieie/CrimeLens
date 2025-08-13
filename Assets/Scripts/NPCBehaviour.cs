@@ -29,6 +29,8 @@ public class NPCBehaviour : MonoBehaviour
         if (dialogueActive && dialogueLines.Length > 0)
         {
             GameManager.instance.questTrackerUI.SetActive(false);
+            interactPrompt.gameObject.SetActive(false); // Hide interaction prompt
+            // Set the NPC name and dialogue text
             nameText.text = gameObject.name; // Set the NPC name
             dialogueText.text = "";
             // Activate the dialogue UI
@@ -94,7 +96,8 @@ public class NPCBehaviour : MonoBehaviour
         }
 
         Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
-        GameManager.instance.questTrackerUI.SetActive(false);
+        GameManager.instance.questTrackerUI.SetActive(true); // Show quest tracker UI
+        interactPrompt.gameObject.SetActive(true); // Show interaction prompt
         QuestTracker.Instance.CompleteObjective(1);
     }
 

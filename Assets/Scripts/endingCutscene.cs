@@ -49,7 +49,7 @@ public class endingCutscene : MonoBehaviour
         // End the cutscene
         videoDisplay.SetActive(false);
         endingMenu.SetActive(true);
-        scoreText.text = "Your Score: " + GameManager.instance.score.ToString();
+        scoreText.text = "Score: " + GameManager.instance.score.ToString();
         messageText.text = "Thank you for playing! You have successfully infiltrated the company and have escaped.\n\nYour score reflects your performance during the game.\n\nYou can try again and attempt to get a higher score.";
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         Cursor.visible = true; // Make cursor visible
