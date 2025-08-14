@@ -1154,6 +1154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 62298655}
   - component: {fileID: 62298656}
+  - component: {fileID: 62298657}
   m_Layer: 0
   m_Name: QuestSwapper
   m_TagString: Untagged
@@ -1170,8 +1171,8 @@ Transform:
   m_GameObject: {fileID: 62298653}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.429535, y: 4.13, z: 18.71}
-  m_LocalScale: {x: 1.2910229, y: 1.065118, z: 1.2910229}
+  m_LocalPosition: {x: 3.77, y: 0.55, z: 16.86}
+  m_LocalScale: {x: 2.5622084, y: 0.6683936, z: 3.7532835}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1188,10 +1189,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76c7715ce59c0c4aa74f092f62eccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage0Objectives:
-  - Talk to Jemery
-  - Complete the task
-  stage1Objectives: []
+  objectives:
+  - Speak with the NPC
+  - Complete the computer task
+--- !u!65 &62298657
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62298653}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &62615022
 PrefabInstance:
   m_ObjectHideFlags: 0

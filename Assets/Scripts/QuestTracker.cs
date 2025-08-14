@@ -1,10 +1,13 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using GLTFast.Schema;
+using UnityEngine.SceneManagement;
 
 public class QuestTracker : MonoBehaviour
 {
     public static QuestTracker Instance;  // Singleton instance
+    private Dictionary<string, int> sceneStages = new Dictionary<string, int>();
 
     [Header("Assign in Inspector or leave empty to auto-find")]
     public TMP_Text[] objectiveTMPs;
@@ -50,14 +53,14 @@ public class QuestTracker : MonoBehaviour
 
     public int GetQuestStage(string sceneName)
     {
-        if (!sceneQuestStages.ContainsKey(sceneName))
-            sceneQuestStages[sceneName] = 0; // default to stage 0
-        return sceneQuestStages[sceneName];
+        if (!sceneStages.ContainsKey(sceneName))
+            sceneStages[sceneName] = 0; // default to stage 0
+        return sceneStages[sceneName];
     }
 
     public void SetQuestStage(string sceneName, int stage)
     {
-        sceneQuestStages[sceneName] = stage;
+        sceneStages[sceneName] = stage;
         Debug.Log($"[QuestTracker] Quest stage for scene '{sceneName}' set to {stage}");
     }
 
@@ -122,5 +125,19 @@ public class QuestTracker : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+     private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene == "ServerRoom")
+        {
+            Debug.Log($"[QuestTracker] Player exited trigger in {currentScene} → Setting lobby stage to 1");
+            SetQuestStage("lobby", 1);
+        }
+    }
+        
 }
 
