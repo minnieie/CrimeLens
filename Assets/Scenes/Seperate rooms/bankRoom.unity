@@ -1188,8 +1188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76c7715ce59c0c4aa74f092f62eccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectives:
-  - Solve the CAPTCHA on the computer
+  stage0Objectives:
+  - Talk to Jemery
+  - Complete the task
+  stage1Objectives: []
 --- !u!1001 &62615022
 PrefabInstance:
   m_ObjectHideFlags: 0

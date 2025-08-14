@@ -34361,9 +34361,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76c7715ce59c0c4aa74f092f62eccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectives:
-  - Interact with computer
-  - Solve the Deefake puzzle
+  stage0Objectives:
+  - Talk to NPCs
+  - Complete the activity
+  stage1Objectives: []
 --- !u!4 &1967079344
 Transform:
   m_ObjectHideFlags: 0

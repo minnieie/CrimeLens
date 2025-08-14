@@ -117,14 +117,15 @@ public class ComputerBehaviour : MonoBehaviour
         // Disable player movement
         if (player != null)
             player.GetComponent<FirstPersonController>().enabled = false;
-            
-        QuestTracker.Instance.CompleteObjective(0);
     }
 
     public void EndInteraction()
     {
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
+
+        // Mark Quest as Complete
+        QuestTracker.Instance.CompleteObjective(1);
 
         if (GameManager.instance != null && GameManager.instance.questTrackerUI != null)
         {

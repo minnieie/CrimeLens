@@ -2229,9 +2229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76c7715ce59c0c4aa74f092f62eccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectives:
-  - Retrieve the data
-  - Escape the building
+  stage0Objectives:
+  - Extract data
+  - Escape the room
+  stage1Objectives: []
 --- !u!1 &318730709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5444249411736041160, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}

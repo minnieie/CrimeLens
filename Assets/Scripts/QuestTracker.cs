@@ -1,14 +1,18 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class QuestTracker : MonoBehaviour
 {
     public static QuestTracker Instance;  // Singleton instance
 
-    [Header("Optional: Assign in Inspector or leave empty to auto-find")]
+    [Header("Assign in Inspector or leave empty to auto-find")]
     public TMP_Text[] objectiveTMPs;
 
     private bool[] completedObjectives;
+
+    // Tracks quest stages per scene (sceneName → stage index)
+    private Dictionary<string, int> sceneQuestStages = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -27,7 +31,6 @@ public class QuestTracker : MonoBehaviour
         // Auto-find objective TMPs if not assigned or empty
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)
         {
-            // Assuming objective TMPs are siblings or children named "Objective1", "Objective2", etc.
             objectiveTMPs = GetComponentsInChildren<TMP_Text>(true);
 
             if (objectiveTMPs.Length == 0)
@@ -41,7 +44,27 @@ public class QuestTracker : MonoBehaviour
         }
     }
 
-    // Method to set the current quest objectives
+    // -----------------------------
+    // QUEST STAGE MANAGEMENT
+    // -----------------------------
+
+    public int GetQuestStage(string sceneName)
+    {
+        if (!sceneQuestStages.ContainsKey(sceneName))
+            sceneQuestStages[sceneName] = 0; // default to stage 0
+        return sceneQuestStages[sceneName];
+    }
+
+    public void SetQuestStage(string sceneName, int stage)
+    {
+        sceneQuestStages[sceneName] = stage;
+        Debug.Log($"[QuestTracker] Quest stage for scene '{sceneName}' set to {stage}");
+    }
+
+    // -----------------------------
+    // QUEST OBJECTIVE DISPLAY
+    // -----------------------------
+
     public void SetQuest(string[] objectives)
     {
         if (objectiveTMPs == null || objectiveTMPs.Length == 0)
@@ -50,7 +73,7 @@ public class QuestTracker : MonoBehaviour
             return;
         }
 
-        Debug.Log("[QuestTracker] Setting quest: ");
+        Debug.Log("[QuestTracker] Setting quest:");
 
         completedObjectives = new bool[objectives.Length];
 
@@ -100,3 +123,4 @@ public class QuestTracker : MonoBehaviour
         gameObject.SetActive(false);
     }
 }
+
