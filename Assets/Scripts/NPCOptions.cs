@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 /// <summary>
 /// Manages NPC dialogue interactions with multiple choice options.
@@ -94,18 +95,18 @@ public class NPCOptions : MonoBehaviour
     /// </summary>
     public void StartDialogue()
     {
-        nameText.text = gameObject.name;
-        dialoguePanel.SetActive(true);
-        currentNodeIndex = 0;
-        ShowDialogueNode(dialogueNodes[currentNodeIndex]);
-
         // Show cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        ActiveNPC = this;
-        GameManager.instance.questTrackerUI.SetActive(false);
+        ActiveNPC = this; // Set the active NPC
+        GameManager.instance.questTrackerUI.SetActive(false); // Hide quest tracker
         interactPrompt.gameObject.SetActive(false); // Hide interaction prompt
+
+        nameText.text = gameObject.name;
+        dialoguePanel.SetActive(true); // Show dialogue panel
+        currentNodeIndex = 0; // Reset current node index
+        ShowDialogueNode(dialogueNodes[currentNodeIndex]); // Show the first dialogue node
     }
 
     /// <summary>
@@ -115,17 +116,18 @@ public class NPCOptions : MonoBehaviour
     void ShowDialogueNode(DialogueNode node)
     {
         dialogueText.text = node.line;
-        ShowOptions(node);
+        StartCoroutine(ShowOptions(node));
     }
+
 
     /// <summary>
     /// Displays the available options for the current dialogue node.
     /// Sets up button listeners and updates button text.
     /// </summary>
     /// <param name="node">The dialogue node containing options.</param>
-    void ShowOptions(DialogueNode node)
+    IEnumerator ShowOptions(DialogueNode node)
     {
-        optionsPanel.SetActive(true);
+        optionsPanel.SetActive(true); // Show options panel
         Debug.Log($"Showing {node.options.Count} options");
 
         // Disable all buttons and remove old listeners
@@ -144,20 +146,22 @@ public class NPCOptions : MonoBehaviour
                 break;
             }
 
-            Button btn = optionButtons[i];
-            btn.gameObject.SetActive(true);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = node.options[i];
+            Button btn = optionButtons[i]; // Get the button for this option
+            btn.gameObject.SetActive(true); // Show the button
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = node.options[i]; // Set button text
             int index = i; // capture local copy for closure
-            btn.onClick.AddListener(() =>
+            btn.onClick.AddListener(() => // Add listener for button click
             {
                 Debug.Log($"Option {node.options[index]} clicked");
 
                 int scoreToAdd = 0;
                 bool alreadyScored = false;
 
+                // Check if optionScores and hasScoredFlags are initialized
                 if (node.optionScores != null && index < node.optionScores.Count)
                     scoreToAdd = node.optionScores[index];
 
+                // Check if hasScoredFlags is initialized
                 if (node.hasScoredFlags != null && index < node.hasScoredFlags.Count)
                     alreadyScored = node.hasScoredFlags[index];
 
@@ -175,8 +179,8 @@ public class NPCOptions : MonoBehaviour
 
                 OnOptionSelected(node.nextNodeIndices[index]);
             });
-
         }
+        yield return new WaitForSeconds(0.1f); // Small delay to ensure UI updates
     }
 
     /// <summary>
@@ -186,7 +190,7 @@ public class NPCOptions : MonoBehaviour
     /// <param name="nextIndex">Index of the next dialogue node.</param>
     public void OnOptionSelected(int nextIndex)
     {
-        optionsPanel.SetActive(false);
+        optionsPanel.SetActive(false); // Hide options panel
         if (nextIndex >= 0 && nextIndex < dialogueNodes.Count)
         {
             currentNodeIndex = nextIndex;
@@ -204,11 +208,11 @@ public class NPCOptions : MonoBehaviour
     /// </summary>
     public void EndDialogue()
     {
-        GameManager.instance.questTrackerUI.SetActive(true);
-        interactPrompt.gameObject.SetActive(true);
-        dialoguePanel.SetActive(false);
-        optionsPanel.SetActive(false);
-        dialogueText.text = "";
+        GameManager.instance.questTrackerUI.SetActive(true); // Show quest tracker UI
+        interactPrompt.gameObject.SetActive(true); // Show interaction prompt
+        dialoguePanel.SetActive(false); // Hide dialogue panel
+        optionsPanel.SetActive(false); // Hide options panel
+        dialogueText.text = ""; // Clear dialogue text
 
         // Hide cursor again
         Cursor.lockState = CursorLockMode.Locked;

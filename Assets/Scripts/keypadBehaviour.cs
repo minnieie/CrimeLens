@@ -17,8 +17,8 @@ public class keypadBehaviour : MonoBehaviour
     private string enteredCode = "";
     private readonly string correctCode = "2724"; // Set your desired code here
     public bool lockedDoor = true; // Track if the door is locked
-    // [SerializeField]
-    // TMP_InputField inputField; // Input field for user to enter the code
+
+    public TextMeshProUGUI interactPrompt;
 
     private void LockPlayerScreen(bool lockScreen)
     {
@@ -26,13 +26,11 @@ public class keypadBehaviour : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            // Optionally, disable player movement script here
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            // Optionally, enable player movement script here
         }
     }
 
@@ -51,7 +49,6 @@ public class keypadBehaviour : MonoBehaviour
             }
         }
         keypadPanel.SetActive(true);
-        // enteredCode = inputField.text;
         displayText.text = "";
         LockPlayerScreen(true); // Lock the player screen when keypad is shown
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor
@@ -111,12 +108,20 @@ public class keypadBehaviour : MonoBehaviour
         enteredCode = ""; // reset code
     }
 
-    // private void UnlockDoor()
-    // {
-    //     // Example: disable door collider and/or play animation
-    //     if (door != null)
-    //     {
-    //         levelChanger.SetActive(true);
-    //     }
-    // }
+    // Show interaction prompt when player is nearby
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && interactPrompt != null)
+        {
+            interactPrompt.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && interactPrompt != null)
+        {
+            interactPrompt.gameObject.SetActive(false);
+        }
+    }
 }

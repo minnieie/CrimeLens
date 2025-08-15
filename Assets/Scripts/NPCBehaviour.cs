@@ -11,7 +11,7 @@ public class NPCBehaviour : MonoBehaviour
     public string[] dialogueLines; // Array of dialogue lines for the NPC
     public TextMeshProUGUI dialogueText; // Text component to display dialogue
     public TextMeshProUGUI nameText; // Text component to display NPC name
-    public float wordDelay = 0.3f; // Delay between words
+    public float wordDelay = 0.2f; // Delay between words
     public static bool dialogueActive = false; // Flag to check if dialogue is active
     private int currentLine = 0; // Index of the current dialogue line
     public static NPCBehaviour ActiveNPC = null; // Reference to the active NPC
@@ -98,7 +98,7 @@ public class NPCBehaviour : MonoBehaviour
         Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
         GameManager.instance.questTrackerUI.SetActive(true); // Show quest tracker UI
         interactPrompt.gameObject.SetActive(true); // Show interaction prompt
-        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // Get the current scene name
         int stage = QuestTracker.Instance.GetQuestStage(sceneName);
         int objectiveIndex = 0; // Set the appropriate objective index
 
