@@ -14406,6 +14406,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1088714989 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4372333047237144660, guid: e8fc3e1b141a79c46b0b1f51770441ed, type: 3}
+  m_PrefabInstance: {fileID: 1088714987}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1093962183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25925,9 +25936,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 421936347}
     - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
+      propertyPath: spawnID
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
+      propertyPath: roomName
+      value: lobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
+      propertyPath: roomNameText
+      value: 
+      objectReference: {fileID: 1088714989}
+    - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
       propertyPath: interactPrompt
       value: 
       objectReference: {fileID: 1088714988}
+    - target: {fileID: 5218614682298052604, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
+      propertyPath: targetSceneIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6196974458667825649, guid: b93d9ab17bf0b6c47acc92f59050640c, type: 3}
       propertyPath: m_Name
       value: LevelChanger

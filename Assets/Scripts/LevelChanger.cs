@@ -121,6 +121,10 @@ public class LevelChanger : MonoBehaviour
             // Hide room name immediately
             if (roomNameText != null)
                 roomNameText.gameObject.SetActive(false);
+
+            // Reset interaction prompt text
+            if (interactPrompt != null)
+                interactPrompt.text = "Press E to interact";
         }
     }
 
