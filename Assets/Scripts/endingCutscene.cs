@@ -15,7 +15,7 @@ public class endingCutscene : MonoBehaviour
     public TextMeshProUGUI scoreText; // Reference to the score text UI element
     public TextMeshProUGUI messageText; // Reference to the message text UI element
     private AudioSource audioSource;  // AudioSource component used to play sounds
-    GameManager score;
+    // GameManager score;
 
     public void StartCutscene()
     {
