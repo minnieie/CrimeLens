@@ -27,7 +27,11 @@ public class CaptchaCode : MonoBehaviour
         if (userInput == generatedCode)
         {
             feedbackText.text = "Correct!";
-            QuestTracker.Instance.CompleteObjective(1); // Assuming the first objective is the one to complete
+            string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            int stage = QuestTracker.Instance.GetQuestStage(sceneName);
+            int objectiveIndex = 1; // Set the appropriate objective index
+
+            QuestTracker.Instance.CompleteObjective(sceneName, stage, objectiveIndex);
             StartCoroutine(CloseAfterDelay()); // Hide the captcha UI after a delay on successful verification
         }
         else

@@ -244,7 +244,11 @@ public class QuizManager : MonoBehaviour
 
         // Show final score
         scoreText.text = $"You answered {correctAnswersCount} out of {questions.Count} questions correctly!";
-        QuestTracker.Instance.CompleteObjective(1);
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        int stage = QuestTracker.Instance.GetQuestStage(sceneName);
+        int objectiveIndex = 1; // Set the appropriate objective index
+
+        QuestTracker.Instance.CompleteObjective(sceneName, stage, objectiveIndex);
     }
 
     // Restarts the quiz

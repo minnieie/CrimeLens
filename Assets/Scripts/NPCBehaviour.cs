@@ -98,7 +98,11 @@ public class NPCBehaviour : MonoBehaviour
         Debug.Log("Dialogue ended with " + gameObject.name); // Log the end of dialogue
         GameManager.instance.questTrackerUI.SetActive(true); // Show quest tracker UI
         interactPrompt.gameObject.SetActive(true); // Show interaction prompt
-        QuestTracker.Instance.CompleteObjective(1);
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        int stage = QuestTracker.Instance.GetQuestStage(sceneName);
+        int objectiveIndex = 0; // Set the appropriate objective index
+
+        QuestTracker.Instance.CompleteObjective(sceneName, stage, objectiveIndex);
     }
 
     // Show interaction prompt when player is nearby

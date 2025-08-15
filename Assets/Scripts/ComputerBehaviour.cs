@@ -124,9 +124,6 @@ public class ComputerBehaviour : MonoBehaviour
         Debug.Log("EndInteraction called on " + gameObject.name);
         isInteracting = false;
 
-        // Mark Quest as Complete
-        QuestTracker.Instance.CompleteObjective(1);
-
         if (GameManager.instance != null && GameManager.instance.questTrackerUI != null)
         {
             GameManager.instance.questTrackerUI.SetActive(true);

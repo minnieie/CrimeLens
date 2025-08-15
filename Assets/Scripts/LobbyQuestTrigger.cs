@@ -11,16 +11,23 @@ public class LobbyQuestTrigger : MonoBehaviour
     {
         if (QuestTracker.Instance == null) return;
 
+        // Get current scene name and stage
         string sceneName = SceneManager.GetActiveScene().name;
         int stage = QuestTracker.Instance.GetQuestStage(sceneName);
 
         Debug.Log($"[LobbyQuestTrigger] Lobby stage {stage} detected");
 
-        // Show correct objectives based on stage
+        // Choose objectives based on current stage
+        string[] objectivesToSet = null;
         if (stage == 0)
-            QuestTracker.Instance.SetQuest(stage0Objectives);
+            objectivesToSet = stage0Objectives;
         else if (stage == 1)
-            QuestTracker.Instance.SetQuest(stage1Objectives);
+            objectivesToSet = stage1Objectives;
+
+        // Set objectives using the new method
+        if (objectivesToSet != null)
+            QuestTracker.Instance.SetQuest(sceneName, stage, objectivesToSet);
     }
 }
+
 

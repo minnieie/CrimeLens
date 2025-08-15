@@ -150,5 +150,11 @@ public class USBBehaviour : MonoBehaviour
     private void OnDownloadComplete()
     {
         Debug.Log("Download complete!");
+
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        int stage = QuestTracker.Instance.GetQuestStage(sceneName);
+        int objectiveIndex = 0; // Set the appropriate objective index
+
+        QuestTracker.Instance.CompleteObjective(sceneName, stage, objectiveIndex);
     }
 }
