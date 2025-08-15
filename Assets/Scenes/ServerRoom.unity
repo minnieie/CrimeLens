@@ -2195,8 +2195,8 @@ GameObject:
   m_Component:
   - component: {fileID: 292574562}
   - component: {fileID: 292574564}
-  - component: {fileID: 292574565}
   - component: {fileID: 292574566}
+  - component: {fileID: 292574567}
   m_Layer: 0
   m_Name: QuestSwapper
   m_TagString: Untagged
@@ -2213,8 +2213,8 @@ Transform:
   m_GameObject: {fileID: 292574561}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.579, y: 0.42, z: 65.58}
-  m_LocalScale: {x: 3.3817344, y: 0.6739253, z: 4.1276255}
+  m_LocalPosition: {x: -0.7, y: 0.42, z: 65.93}
+  m_LocalScale: {x: 2.1579862, y: 0.6739253, z: 2.3050313}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2240,20 +2240,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &292574565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292574561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18a823e984104464e8cf9edc5031fa50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetScene: lobby
-  newStage: 1
 --- !u!114 &292574566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2269,6 +2255,20 @@ MonoBehaviour:
   objectives:
   - Retrieve the Data
   - 'Evade the Boss '
+--- !u!114 &292574567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292574561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 350349dff64d5124b971e8aef67258ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToUpdate: lobby
+  stageToSet: 1
 --- !u!1 &318730709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5444249411736041160, guid: 62539615abef0a44ea2fb5e83522811d, type: 3}

@@ -26722,6 +26722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1664743958}
   - component: {fileID: 1664743957}
+  - component: {fileID: 1664743959}
   m_Layer: 0
   m_Name: QuestSwapper
   m_TagString: Untagged
@@ -26741,10 +26742,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76c7715ce59c0c4aa74f092f62eccce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage0Objectives:
-  - talk to the NPCs
+  objectives:
+  - Talk to the NPCs
   - Complete the activity
-  stage1Objectives: []
 --- !u!4 &1664743958
 Transform:
   m_ObjectHideFlags: 0
@@ -26754,12 +26754,33 @@ Transform:
   m_GameObject: {fileID: 1664743956}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 65}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -5.77, y: 1.76, z: 17.56}
+  m_LocalScale: {x: 2.397633, y: 2.8166, z: 3.5724}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1664743959
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664743956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1665581092
 PrefabInstance:
   m_ObjectHideFlags: 0
