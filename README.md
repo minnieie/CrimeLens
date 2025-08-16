@@ -1,4 +1,5 @@
 # Integrated Project - CrimeLens
+![Logo](./Assets/ReadMe/logoWver.jpg)
 
 ## Overview
 ### Brief Game Description
@@ -121,3 +122,17 @@ Keypad Code: 2724
 Character Controller: [Starter Assets: Caharcter Controller](https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961) 
 Characters: [Mixamo, Police Cutscene](https://sketchfab.com/3d-models/police-man-sg-73ec215f59e94763b1acde2e78db7969)
 Skybox: [Skybox Series Free | 2D Sky | Unity Asset Store](https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633)
+
+# Gallery 
+
+**Main Menu**  
+![Menu](./Assets/ReadMe/menu.png)
+
+**Cutscene**  
+![Cutscene](./Assets/ReadMe/cutscene.png)
+
+**NPC Interaction**  
+![NPC](./Assets/ReadMe/NPC.png)
+
+**Server Room**  
+![Server Room](./Assets/ReadMe/ServerRoom.png)
