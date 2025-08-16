@@ -1,6 +1,6 @@
 # Integrated Project - CrimeLens
 <div align="center">
-  <img src="./Assets/ReadMe/logoWver.jpg" style="max-width: 100px; height: auto;">
+  <img src="./Assets/ReadMe/logoWver.jpg" style="width: 800px; height: auto;">
 </div>
 
 
@@ -128,15 +128,11 @@ Skybox: [Skybox Series Free | 2D Sky | Unity Asset Store](https://assetstore.uni
 
 # Gallery 
 
-<h3>Main Menu</h3>
-<img src="./Assets/ReadMe/menu.png" width="400">
+<img src="./Assets/ReadMe/menu.png" width="1000">
 
-<h3>Cutscene</h3>
-<img src="./Assets/ReadMe/cutscene.png" width="400">
+<img src="./Assets/ReadMe/cutscene.png" width="1000">
 
-<h3>NPC Interaction</h3>
-<img src="./Assets/ReadMe/NPC.png" width="400">
+<img src="./Assets/ReadMe/NPC.png" width="1000">
 
-<h3>Server Room</h3>
-<img src="./Assets/ReadMe/ServerRoom.png" width="400">
+<img src="./Assets/ReadMe/ServerRoom.png" width="4600">
 
