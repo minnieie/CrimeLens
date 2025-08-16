@@ -1,5 +1,7 @@
 # Integrated Project - CrimeLens
-![Logo](./Assets/ReadMe/logoWver.jpg)
+<div align="center">
+  <img src="./Assets/ReadMe/logoWver.jpg" style="max-width: 200px; height: auto;">
+</div>
 
 ## Overview
 ### Brief Game Description
@@ -125,14 +127,15 @@ Skybox: [Skybox Series Free | 2D Sky | Unity Asset Store](https://assetstore.uni
 
 # Gallery 
 
-**Main Menu**  
-![Menu](./Assets/ReadMe/menu.png)
+<h3>Main Menu</h3>
+<img src="./Assets/ReadMe/menu.png" width="400">
 
-**Cutscene**  
-![Cutscene](./Assets/ReadMe/cutscene.png)
+<h3>Cutscene</h3>
+<img src="./Assets/ReadMe/cutscene.png" width="400">
 
-**NPC Interaction**  
-![NPC](./Assets/ReadMe/NPC.png)
+<h3>NPC Interaction</h3>
+<img src="./Assets/ReadMe/NPC.png" width="400">
 
-**Server Room**  
-![Server Room](./Assets/ReadMe/ServerRoom.png)
+<h3>Server Room</h3>
+<img src="./Assets/ReadMe/ServerRoom.png" width="400">
+
