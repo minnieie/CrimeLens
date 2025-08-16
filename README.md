@@ -1,7 +1,6 @@
 # Integrated Project - CrimeLens
 <div align="center">
-  <img src="./Assets/ReadMe/logoWver.jpg" style="max-width: 150px; height: auto;">
-  <h1>CRIMELENS</h1>
+  <img src="./Assets/ReadMe/logoWver.jpg" style="max-width: 100px; height: auto;">
 </div>
 
 
